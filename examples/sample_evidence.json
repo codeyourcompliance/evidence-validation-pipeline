@@ -1,0 +1,38 @@
+{
+  "evidence_id": "sample-evidence-001",
+  "host_id": "sample-host-001",
+  "collector": "ansible-readonly",
+  "collector_version": "0.1.0",
+  "timestamp_utc": "2026-04-28T09:30:00Z",
+  "evidence_type": "tls_certificate_lifecycle",
+  "collection_method": "read_only",
+  "source_system": {
+    "os_family": "linux",
+    "service_type": "http_server",
+    "service_protocol": "https",
+    "service_port": 443
+  },
+  "tls": {
+    "certificate_not_before": "2026-04-26T09:30:00Z",
+    "certificate_not_after": "2026-04-30T09:30:00Z",
+    "signature_algorithm": "sha256WithRSAEncryption",
+    "public_key_algorithm": "rsaEncryption",
+    "public_key_bits": 2048
+  },
+  "derived_facts": {
+    "cert_days_to_expiry": 2,
+    "cert_expiring_within_30_days": true,
+    "signature_algorithm_family": "sha256-rsa",
+    "public_key_strength_bits": 2048
+  },
+  "integrity": {
+    "hash_algorithm": "SHA256",
+    "evidence_hash": "sample-placeholder-hash",
+    "validation_status": "verified"
+  },
+  "policy_context": {
+    "policy_engine": "opa",
+    "policy_language": "rego",
+    "control_context": "MAS TRM-inspired cryptographic control assurance"
+  }
+}
