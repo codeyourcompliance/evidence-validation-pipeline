@@ -1,5 +1,5 @@
 # Evidence Validation Pipeline
-![From Documentation to Evidence-Based Compliance](assets/images/From%20Documentation%20to%20Evidence-Based%20Compliance.png)
+![Shifting from Documentation to Replayable Evidence](assets/images/Shifting%20from%20Documentation%20to%20Replayable%20Evidence.png)
 > A minimal MAS TRM-inspired evidence pipeline for replayable compliance automation.
 
 This repository demonstrates the first CodeYourCompliance technical pattern:
