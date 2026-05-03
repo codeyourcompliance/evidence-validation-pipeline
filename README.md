@@ -1,5 +1,5 @@
 # Evidence Validation Pipeline
-
+![From Documentation to Evidence-Based Compliance](assets/images/From%20Documentation%20to%20Evidence-Based%20Compliance.png)
 > A minimal MAS TRM-inspired evidence pipeline for replayable compliance automation.
 
 This repository demonstrates the first CodeYourCompliance technical pattern:
@@ -43,28 +43,7 @@ The article introduces the core thesis behind this repository: compliance eviden
 - **Future releases:** will add read-only collection, schema validation, integrity verification, and OPA/Rego policy examples.
 
 ## Architecture Overview
-
-```text
-Apache / TLS System State
-        |
-        v
-Read-Only Evidence Collection
-        |
-        v
-Timestamped Evidence Package
-        |
-        v
-SHA256 Integrity Check
-        |
-        v
-Python Verification and Fact Derivation
-        |
-        v
-OPA / Rego Policy Evaluation
-        |
-        v
-MAS TRM-Aligned Audit Narrative
-```
+![Evidence Validation Pipeline](assets/images/Evidence%20Validation%20Pipeline.png)
 
 In prose, the flow is simple:
 
