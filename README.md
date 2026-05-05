@@ -36,7 +36,7 @@ This repository accompanies the CodeYourCompliance article series on MAS TRM-ins
 
 **Compliance Is Not Documentation. It Is Evidence That Can Be Replayed.**
 
-Substack: https://codeyourcompliance.substack.com/p/compliance-is-not-documentation-it-18e
+Substack: [https://codeyourcompliance.substack.com/p/compliance-is-not-documentation-it-18e](https://www.codeyourcompliance.com/p/compliance-is-not-documentation-it-18e)
 
 The article introduces the core thesis behind this repository: compliance evidence should be collectible, timestamped, integrity-checked, machine-evaluable, and replayable.
 
@@ -44,7 +44,7 @@ The article introduces the core thesis behind this repository: compliance eviden
 
 **Read-Only Evidence Collection Is Not a Convenience. It Is an Audit Boundary.**
 
-Substack: link to be added after publication.
+Substack: https://www.codeyourcompliance.com/p/read-only-collection-as-an-audit
 
 The article explains why evidence collection should observe the target system without modifying it. Collection is evidence work. Remediation belongs in a separate workflow.
 
