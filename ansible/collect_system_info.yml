@@ -10,7 +10,7 @@
   become: false
 
   vars:
-    collector_name: "ansible.read_only.system_info"
+    collector_name: "ansible.collect_system_info"
     collector_version: "0.1.0"
     evidence_type: "system_baseline"
     output_dir: "../examples/generated"
