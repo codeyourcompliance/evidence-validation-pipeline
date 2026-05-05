@@ -1,0 +1,101 @@
+{
+  "host_id": "rocky9-apache01",
+  "collector": "ansible.collect_system_info",
+  "collector_version": "0.1.0",
+  "timestamp_utc": "2026-05-05T09:30:00Z",
+  "evidence_type": "system_baseline",
+  "data": {
+    "collection_mode": "read_only",
+    "collection_scope": "host_system_baseline",
+    "target": {
+      "hostname": "apache01",
+      "fqdn": "apache01.lab.local",
+      "primary_ipv4": "192.0.2.10",
+      "environment": "lab",
+      "role": "apache_httpd_target"
+    },
+    "operating_system": {
+      "distribution": "Rocky Linux",
+      "distribution_version": "9.4",
+      "kernel": "5.14.0-427.13.1.el9_4.x86_64",
+      "architecture": "x86_64"
+    },
+    "runtime_state": {
+      "uptime_seconds": 184233,
+      "boot_time_utc": "2026-05-03T06:19:27Z"
+    },
+    "services": [
+      {
+        "name": "httpd",
+        "state": "running",
+        "enabled": true
+      },
+      {
+        "name": "sshd",
+        "state": "running",
+        "enabled": true
+      },
+      {
+        "name": "firewalld",
+        "state": "running",
+        "enabled": true
+      }
+    ],
+    "listening_ports": [
+      {
+        "protocol": "tcp",
+        "port": 22,
+        "process": "sshd"
+      },
+      {
+        "protocol": "tcp",
+        "port": 80,
+        "process": "httpd"
+      },
+      {
+        "protocol": "tcp",
+        "port": 443,
+        "process": "httpd"
+      }
+    ],
+    "packages": [
+      {
+        "name": "httpd",
+        "version": "2.4.57-11.el9_4",
+        "source": "rpm"
+      },
+      {
+        "name": "mod_ssl",
+        "version": "2.4.57-11.el9_4",
+        "source": "rpm"
+      },
+      {
+        "name": "openssl",
+        "version": "3.0.7-27.el9_4",
+        "source": "rpm"
+      }
+    ],
+    "files_observed": [
+      {
+        "path": "/etc/httpd/conf/httpd.conf",
+        "exists": true,
+        "owner": "root",
+        "group": "root",
+        "mode": "0644"
+      },
+      {
+        "path": "/etc/httpd/conf.d/ssl.conf",
+        "exists": true,
+        "owner": "root",
+        "group": "root",
+        "mode": "0644"
+      }
+    ],
+    "collector_assertions": {
+      "changed_target_system": false,
+      "installed_packages": false,
+      "restarted_services": false,
+      "modified_configuration": false
+    }
+  }
+}
