@@ -1,5 +1,7 @@
 # Evidence Validation Pipeline
+
 ![Shifting from Documentation to Replayable Evidence](assets/images/Shifting%20from%20Documentation%20to%20Replayable%20Evidence.png)
+
 > A minimal MAS TRM-inspired evidence pipeline for replayable compliance automation.
 
 This repository demonstrates the first CodeYourCompliance technical pattern:
@@ -26,9 +28,11 @@ The minimal pipeline is:
 
 The first demo scenario uses Apache HTTPD with TLS enabled. The target system is intentionally configured with a TLS certificate approaching expiry, such as within 48 hours, so the pipeline can produce a clear technical finding.
 
-## Related Article
+## Related Articles
 
-This repository accompanies the Week 1 CodeYourCompliance article:
+This repository accompanies the CodeYourCompliance article series on MAS TRM-inspired compliance automation.
+
+### Week 1
 
 **Compliance Is Not Documentation. It Is Evidence That Can Be Replayed.**
 
@@ -36,18 +40,47 @@ Substack: https://codeyourcompliance.substack.com/p/compliance-is-not-documentat
 
 The article introduces the core thesis behind this repository: compliance evidence should be collectible, timestamped, integrity-checked, machine-evaluable, and replayable.
 
+### Week 2
+
+**Read-Only Evidence Collection Is Not a Convenience. It Is an Audit Boundary.**
+
+Substack: link to be added after publication.
+
+The article explains why evidence collection should observe the target system without modifying it. Collection is evidence work. Remediation belongs in a separate workflow.
+
 ## Content Relationship
 
-- **Substack article:** explains the problem language and architecture thesis.
-- **This repository:** stores the sample evidence structure, report example, and future implementation assets.
-- **Future releases:** will add read-only collection, schema validation, integrity verification, and OPA/Rego policy examples.
+- **Substack articles:** explain the problem language and architecture thesis.
+- **This repository:** stores sample evidence structures, report examples, and implementation increments.
+- **Week 2 increment:** adds the first read-only collection pattern.
+- **Future releases:** will extend schema validation, integrity verification, and OPA/Rego policy examples.
 
 ## Architecture Overview
+
 ![Evidence Validation Pipeline](assets/images/Evidence%20Validation%20Pipeline.png)
 
 In prose, the flow is simple:
 
 System state is collected in read-only mode, packaged as timestamped evidence, checked for integrity, converted into derived facts, evaluated through policy logic, and finally translated into an audit narrative.
+
+## Week 2 Increment: Read-Only Evidence Collection
+
+Week 2 adds the first concrete read-only collection pattern.
+
+The purpose of this increment is to separate observation from remediation. The collector is expected to gather system baseline evidence without installing packages, restarting services, rewriting configuration, or otherwise changing the target system.
+
+The output evidence object should include:
+
+- `host_id`
+- `collector`
+- `collector_version`
+- `timestamp_utc`
+- `evidence_type`
+- `data`
+
+This keeps the collector outside the system state being assessed.
+
+Collection is evidence work. Remediation belongs in a separate workflow.
 
 ## Components
 
@@ -62,6 +95,8 @@ The first demo assumes:
 - Apache HTTPD with TLS enabled
 - TLS certificate metadata collected as evidence
 
+For the Week 2 system baseline increment, the read-only collector should gather host-level facts and package them as timestamped evidence. It should not install packages, restart services, rewrite configuration, or silently remediate the target.
+
 ### Evidence package
 
 The evidence package should include:
@@ -75,6 +110,8 @@ The evidence package should include:
 - integrity metadata
 
 See [`examples/sample_evidence.json`](examples/sample_evidence.json).
+
+For the Week 2 system baseline example, see [`examples/sample_system_baseline.json`](examples/sample_system_baseline.json).
 
 ### Integrity verification
 
@@ -142,19 +179,24 @@ Planned structure:
 /docs
 ```
 
-Current Week 1 structure:
+Current structure:
 
 ```text
 evidence-validation-pipeline/
 ├── README.md
+├── ansible/
+│   └── collect_system_info.yml
 └── examples/
     ├── sample_evidence.json
-    └── sample_report.md
+    ├── sample_report.md
+    └── sample_system_baseline.json
 ```
 
 ## Related Concepts
 
 - MAS TRM-inspired compliance automation
+- read-only evidence collection
+- non-invasive collection
 - replayable evidence
 - verifiable compliance
 - evidence-as-code
