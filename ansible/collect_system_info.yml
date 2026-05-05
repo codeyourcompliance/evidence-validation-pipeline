@@ -1,0 +1,64 @@
+---
+# Read-only system baseline collector.
+#
+# This playbook observes target system state and writes a JSON evidence
+# object on the Ansible controller. It does not remediate the target.
+
+- name: Collect read-only system baseline evidence
+  hosts: all
+  gather_facts: true
+  become: false
+
+  vars:
+    collector_name: "ansible.read_only.system_info"
+    collector_version: "0.1.0"
+    evidence_type: "system_baseline"
+    output_dir: "../examples/generated"
+
+  tasks:
+    - name: Build evidence object
+      ansible.builtin.set_fact:
+        evidence_package:
+          host_id: "{{ inventory_hostname }}"
+          collector: "{{ collector_name }}"
+          collector_version: "{{ collector_version }}"
+          timestamp_utc: "{{ ansible_date_time.iso8601 }}"
+          evidence_type: "{{ evidence_type }}"
+          data:
+            collection_mode: "read_only"
+            target_changes_expected: false
+            os:
+              distribution: "{{ ansible_facts.distribution | default('unknown') }}"
+              distribution_version: "{{ ansible_facts.distribution_version | default('unknown') }}"
+              distribution_major_version: "{{ ansible_facts.distribution_major_version | default('unknown') }}"
+              kernel: "{{ ansible_facts.kernel | default('unknown') }}"
+              architecture: "{{ ansible_facts.architecture | default('unknown') }}"
+            host:
+              hostname: "{{ ansible_facts.hostname | default('unknown') }}"
+              fqdn: "{{ ansible_facts.fqdn | default('unknown') }}"
+              default_ipv4: "{{ ansible_facts.default_ipv4.address | default('unknown') }}"
+            runtime:
+              python_version: "{{ ansible_facts.python_version | default('unknown') }}"
+              package_manager: "{{ ansible_facts.pkg_mgr | default('unknown') }}"
+              service_manager: "{{ ansible_facts.service_mgr | default('unknown') }}"
+            ansible:
+              ansible_version: "{{ ansible_version.full | default('unknown') }}"
+              ansible_connection: "{{ ansible_connection | default('unknown') }}"
+            audit_boundary:
+              observation_only: true
+              remediation_performed: false
+
+    - name: Ensure local evidence output directory exists
+      ansible.builtin.file:
+        path: "{{ output_dir }}"
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Write evidence object on controller
+      ansible.builtin.copy:
+        dest: "{{ output_dir }}/{{ inventory_hostname }}_system_baseline.json"
+        content: "{{ evidence_package | to_nice_json }}\n"
+        mode: "0644"
+      delegate_to: localhost
