@@ -36,7 +36,7 @@ This repository accompanies the CodeYourCompliance article series on MAS TRM-ins
 
 **Compliance Is Not Documentation. It Is Evidence That Can Be Replayed.**
 
-Substack: [https://codeyourcompliance.substack.com/p/compliance-is-not-documentation-it-18e](https://www.codeyourcompliance.com/p/compliance-is-not-documentation-it-18e)
+Substack: https://www.codeyourcompliance.com/p/compliance-is-not-documentation-it-18e
 
 The article introduces the core thesis behind this repository: compliance evidence should be collectible, timestamped, integrity-checked, machine-evaluable, and replayable.
 
@@ -69,7 +69,7 @@ Week 2 adds the first concrete read-only collection pattern.
 
 The purpose of this increment is to separate observation from remediation. The collector is expected to gather system baseline evidence without installing packages, restarting services, rewriting configuration, or otherwise changing the target system.
 
-The output evidence object should include:
+The output evidence event should include:
 
 - `host_id`
 - `collector`
@@ -81,6 +81,16 @@ The output evidence object should include:
 This keeps the collector outside the system state being assessed.
 
 Collection is evidence work. Remediation belongs in a separate workflow.
+
+### Failure Observability Boundary
+
+This increment also establishes the first failure observability boundary in the pipeline.
+
+Read-only collection does not repair the system. It makes system state observable without moving it.
+
+The first observable event is the evidence event: a timestamped record of system state collected without remediation. Policy evaluation and remediation should occur after this boundary, not inside it.
+
+Detection before remediation.
 
 ## Components
 
@@ -197,6 +207,8 @@ evidence-validation-pipeline/
 - MAS TRM-inspired compliance automation
 - read-only evidence collection
 - non-invasive collection
+- failure observability
+- evidence events
 - replayable evidence
 - verifiable compliance
 - evidence-as-code
