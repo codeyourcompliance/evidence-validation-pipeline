@@ -2,7 +2,7 @@
 # Read-only system baseline collector.
 #
 # This playbook observes target system state and writes a JSON evidence
-# object on the Ansible controller. It does not remediate the target.
+# event on the Ansible controller. It does not remediate the target.
 
 - name: Collect read-only system baseline evidence
   hosts: all
@@ -13,16 +13,20 @@
     collector_name: "ansible.collect_system_info"
     collector_version: "0.1.0"
     evidence_type: "system_baseline"
-    output_dir: "../examples/generated"
+    output_dir: "{{ playbook_dir }}/../examples/generated"
 
   tasks:
-    - name: Build evidence object
+    - name: Capture controller UTC timestamp
+      ansible.builtin.set_fact:
+        timestamp_utc: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"
+
+    - name: Build evidence event
       ansible.builtin.set_fact:
         evidence_package:
           host_id: "{{ inventory_hostname }}"
           collector: "{{ collector_name }}"
           collector_version: "{{ collector_version }}"
-          timestamp_utc: "{{ ansible_date_time.iso8601 }}"
+          timestamp_utc: "{{ timestamp_utc }}"
           evidence_type: "{{ evidence_type }}"
           data:
             collection_mode: "read_only"
@@ -56,7 +60,7 @@
       delegate_to: localhost
       run_once: true
 
-    - name: Write evidence object on controller
+    - name: Write evidence event on controller
       ansible.builtin.copy:
         dest: "{{ output_dir }}/{{ inventory_hostname }}_system_baseline.json"
         content: "{{ evidence_package | to_nice_json }}\n"
