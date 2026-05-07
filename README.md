@@ -12,6 +12,26 @@ The goal is to show how a technical compliance finding can be derived from times
 
 This project is an architecture and demo asset. It is not legal, regulatory, audit, or certification advice.
 
+## Project Origin and Attribution
+
+This repository is part of **CodeYourCompliance**, a public technical project exploring MAS TRM-inspired compliance automation through replayable evidence, policy-as-code, and audit-ready evidence structures.
+
+- Website: https://www.codeyourcompliance.com
+- GitHub organization: https://github.com/codeyourcompliance
+- Companion article: https://www.codeyourcompliance.com/p/compliance-is-not-documentation-it-18e
+
+This repository is the original public CodeYourCompliance implementation track for the `evidence-validation-pipeline` pattern.
+
+If you reference, fork, adapt, or discuss this project, please preserve attribution to CodeYourCompliance and link back to the original repository.
+
+## Boundary
+
+MAS TRM-inspired means engineering interpretation. It does not mean MAS approval, certified compliance, legal advice, regulatory advice, or audit sufficiency.
+
+This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, or any specific implementation pattern.
+
+The purpose is narrower: to explore how technical compliance evidence can be collected, verified, evaluated, and replayed.
+
 ## Purpose
 
 The `evidence-validation-pipeline` project shows how to move from a static audit narrative to a replayable evidence workflow.
@@ -194,6 +214,7 @@ Current structure:
 ```text
 evidence-validation-pipeline/
 ├── README.md
+├── NOTICE.md
 ├── ansible/
 │   └── collect_system_info.yml
 └── examples/
