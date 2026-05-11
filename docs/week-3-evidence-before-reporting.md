@@ -78,6 +78,8 @@ fail
 
 Bad evidence should not produce a clean result.
 
+See [`../examples/invalid_evidence_result.json`](../examples/invalid_evidence_result.json).
+
 ## OPA Boundary
 
 OPA is not the audit system.
