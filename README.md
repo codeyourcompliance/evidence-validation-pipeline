@@ -92,7 +92,7 @@ The Week 3 increment sharpens the repository boundary: report automation is not 
 - **Substack articles:** explain the problem language and architecture thesis.
 - **This repository:** stores sample evidence structures, report examples, and implementation increments.
 - **Week 2 increment:** adds the first read-only collection pattern.
-- **Week 3 increment:** adds the evidence-first audit boundary and minimal evidence object.
+- **Week 3 increment:** adds the evidence-first audit boundary, minimal evidence object, and invalid evidence result example.
 - **Future releases:** will extend schema validation, integrity verification, and OPA/Rego policy examples.
 
 ## Architecture Overview
@@ -167,6 +167,8 @@ This increment also fixes the pipeline rule:
 
 If integrity verification fails, OPA should not run. The correct result is `invalid_evidence`, not `pass` or `fail`.
 
+See [`examples/invalid_evidence_result.json`](examples/invalid_evidence_result.json).
+
 ## Components
 
 ### Read-only collection
@@ -202,6 +204,8 @@ See [`examples/sample_evidence.json`](examples/sample_evidence.json).
 
 For the Week 2 system baseline example, see [`examples/sample_system_baseline.json`](examples/sample_system_baseline.json).
 
+For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
+
 ### Integrity verification
 
 A SHA256 hash is used as a minimal tamper-evident check for the evidence package.
@@ -209,6 +213,8 @@ A SHA256 hash is used as a minimal tamper-evident check for the evidence package
 A hash does not prove compliance. It proves whether the evidence changed after collection.
 
 If evidence integrity verification fails, policy evaluation should not run. The correct result is not `pass` or `fail`; it is `invalid_evidence`.
+
+See [`examples/invalid_evidence_result.json`](examples/invalid_evidence_result.json).
 
 ### Fact derivation
 
@@ -283,6 +289,7 @@ evidence-validation-pipeline/
 ├── docs/
 │   └── week-3-evidence-before-reporting.md
 └── examples/
+    ├── invalid_evidence_result.json
     ├── minimal_evidence_object.json
     ├── sample_evidence.json
     ├── sample_report.md
