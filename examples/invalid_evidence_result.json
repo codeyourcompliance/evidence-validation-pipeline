@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-invalid-evidence-001",
+  "evidence_id": "evd-tls-apache-001",
+  "stage": "integrity_verification",
+  "status": "invalid_evidence",
+  "reason": "Evidence hash mismatch. The evidence package changed after collection or was not sealed with the expected manifest.",
+  "expected_hash": "sha256:EXPECTED_HASH_PLACEHOLDER",
+  "actual_hash": "sha256:ACTUAL_HASH_PLACEHOLDER",
+  "policy_evaluation": {
+    "engine": "OPA",
+    "executed": false,
+    "reason": "Policy evaluation is blocked because the evidence failed integrity verification."
+  },
+  "audit_boundary": {
+    "rule": "Integrity verification must pass before policy evaluation.",
+    "statement": "Bad evidence should not produce a clean result."
+  }
+}
