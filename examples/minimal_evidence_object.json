@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_id": "evd-tls-apache-001",
+  "evidence_type": "tls_certificate_state",
+  "observed_object": {
+    "type": "service",
+    "name": "apache-httpd",
+    "endpoint": "https://apache01.example.internal:443"
+  },
+  "source": {
+    "host_id": "apache01",
+    "environment": "lab",
+    "source_system": "rocky-linux-9",
+    "collection_scope": [
+      "apache_tls_configuration",
+      "tls_certificate_metadata"
+    ]
+  },
+  "collector": {
+    "name": "ansible-readonly-tls-collector",
+    "version": "0.1.0",
+    "mode": "read_only",
+    "method": "remote_command_and_file_read",
+    "changed_target_system": false
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-05-11T08:30:00Z",
+    "sealed_at_utc": "2026-05-11T08:30:08Z"
+  },
+  "observations": {
+    "tls": {
+      "certificate": {
+        "not_before": "2026-05-09T00:00:00Z",
+        "not_after": "2026-05-13T00:00:00Z",
+        "signature_algorithm": "sha256WithRSAEncryption",
+        "public_key_bits": 2048
+      },
+      "derived_facts": {
+        "days_to_expiry": 2,
+        "expires_within_threshold": true,
+        "expiry_threshold_days": 30
+      }
+    }
+  },
+  "integrity": {
+    "algorithm": "SHA256",
+    "canonicalization": "json-canonical-form-v0",
+    "evidence_hash": "sha256:REPLACE_WITH_COMPUTED_HASH",
+    "verification_status": "verified"
+  },
+  "control_expectation": {
+    "framework_context": "MAS TRM-inspired",
+    "control_family": "cryptographic_controls",
+    "expectation": "Maintain effective cryptographic controls for secure communications."
+  },
+  "policy_evaluation": {
+    "engine": "OPA",
+    "policy_package": "tls-control-policy-v0.1.0",
+    "input_status": "verified_evidence",
+    "result": "fail",
+    "violations": [
+      {
+        "id": "TLS_CERT_EXPIRY_THRESHOLD",
+        "message": "TLS certificate is approaching expiry within the defined threshold."
+      }
+    ]
+  },
+  "audit_narrative_ref": "reports/tls-certificate-expiry-example.md"
+}
