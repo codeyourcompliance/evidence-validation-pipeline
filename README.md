@@ -85,6 +85,8 @@ The article explains why evidence collection should observe the target system wi
 
 **Compliance Automation Starts at Evidence.**
 
+Substack: https://www.codeyourcompliance.com/p/compliance-automation-starts-at-evidence
+
 The Week 3 increment sharpens the repository boundary: report automation is not evidence automation. A clean audit pack can still be built on weak evidence. Policy evaluation should occur only after evidence is collected, timestamped, sealed, and verified.
 
 ## Content Relationship
