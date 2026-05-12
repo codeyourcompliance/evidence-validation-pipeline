@@ -324,3 +324,6 @@ Official MAS page: https://www.mas.gov.sg/regulation/guidelines/technology-risk-
 
 **OPA** refers to Open Policy Agent. **Rego** is its policy language.
 Official OPA documentation: https://www.openpolicyagent.org/docs
+
+
+![codeyourcompliance-banner-light-master](assets/images/codeyourcompliance-banner-light-master.png)
