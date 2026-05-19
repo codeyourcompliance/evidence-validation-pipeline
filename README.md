@@ -94,7 +94,7 @@ The article sharpens the core boundary behind this repository: report automation
 
 **Can Your Audit Evidence Survive Replay?**
 
-Substack: to be added after publication.
+Substack: https://www.codeyourcompliance.com/p/can-your-audit-evidence-survive-replay
 
 The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later. The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
