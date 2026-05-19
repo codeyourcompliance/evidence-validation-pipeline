@@ -58,6 +58,7 @@ The minimal pipeline is:
 5. Derive machine-readable facts.
 6. Evaluate the facts with policy-as-code.
 7. Generate a MAS TRM-inspired audit narrative.
+8. Replay the same sealed evidence object later to test whether the conclusion still holds.
 
 The first demo scenario uses Apache HTTPD with TLS enabled. The target system is intentionally configured with a TLS certificate approaching expiry, such as within 48 hours, so the pipeline can produce a clear technical finding.
 
@@ -89,13 +90,22 @@ Substack: https://www.codeyourcompliance.com/p/compliance-automation-starts-at-e
 
 The article sharpens the core boundary behind this repository: report automation is not evidence automation. It explains why policy evaluation should only occur after evidence has been collected, timestamped, sealed, and verified.
 
+### Week 4
+
+**Can Your Audit Evidence Survive Replay?**
+
+Substack: to be added after publication.
+
+The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later. The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+
 ## Content Relationship
 
 - **Substack articles:** explain the problem language and architecture thesis.
-- **This repository:** stores sample evidence structures, report examples, and implementation increments.
+- **This repository:** stores sample evidence structures, report examples, checklists, and implementation increments.
 - **Week 2 increment:** adds the first read-only collection pattern.
 - **Week 3 increment:** adds the evidence-first audit boundary, minimal evidence object, and invalid evidence result example.
-- **Future releases:** will extend schema validation, integrity verification, and OPA/Rego policy examples.
+- **Week 4 increment:** adds the evidence replay checklist and formalizes the replay boundary: same evidence, same policy, same conclusion.
+- **Future releases:** will extend schema validation, integrity verification, replay examples, and OPA/Rego policy examples.
 
 ## Architecture Overview
 
@@ -103,7 +113,7 @@ The article sharpens the core boundary behind this repository: report automation
 
 In prose, the flow is simple:
 
-System state is collected in read-only mode, packaged as timestamped evidence, sealed with an integrity hash, verified before policy evaluation, converted into derived facts, evaluated through policy logic, and finally translated into an audit narrative.
+System state is collected in read-only mode, packaged as timestamped evidence, sealed with an integrity hash, verified before policy evaluation, converted into derived facts, evaluated through policy logic, translated into an audit narrative, and later replayed against the same evidence object.
 
 ```text
 System State
@@ -113,6 +123,7 @@ System State
   -> Integrity Verification
   -> OPA Evaluation
   -> Audit Narrative
+  -> Evidence Replay
 ```
 
 The audit boundary starts before the report. Bad evidence should not produce a clean result.
@@ -171,6 +182,35 @@ If integrity verification fails, OPA should not run. The correct result is `inva
 
 See [`examples/invalid_evidence_result.json`](examples/invalid_evidence_result.json).
 
+## Week 4 Increment: Evidence Replay Self-Test
+
+Week 4 adds the reader-facing replay test.
+
+The point is narrow: an audit pack is not strong evidence unless the same sealed evidence object can be verified, evaluated, and replayed later.
+
+The replay boundary is different from the reporting boundary.
+
+A report asks whether the conclusion can be explained.
+
+Replay asks whether the conclusion can be reproduced from the same evidence object.
+
+The minimum replay test asks:
+
+- Does the evidence object include a collection timestamp?
+- Does it identify the collector?
+- Does it preserve source system context?
+- Does it preserve raw evidence before interpretation?
+- Is there an integrity hash or cryptographic seal?
+- Was integrity verified before policy evaluation?
+- Is the policy result tied to this specific evidence object?
+- Is there a defined `invalid_evidence` path?
+- Can the same evidence object be re-evaluated later?
+- Can the audit narrative point back to the verified evidence object?
+
+See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+
+This increment keeps implementation details out of the public article. The public artifact defines the replay test. Later technical briefings can cover schema design, hash verification flow, OPA input/output contracts, Rego skeletons, and replay folder structure.
+
 ## Components
 
 ### Read-only collection
@@ -201,12 +241,15 @@ The evidence package should include:
 - raw or normalized technical facts
 - integrity metadata
 - policy evaluation reference
+- replay status or replay readiness label
 
 See [`examples/sample_evidence.json`](examples/sample_evidence.json).
 
 For the Week 2 system baseline example, see [`examples/sample_system_baseline.json`](examples/sample_system_baseline.json).
 
 For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
+
+For the Week 4 replay checklist, see [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
 ### Integrity verification
 
@@ -217,6 +260,22 @@ A hash does not prove compliance. It proves whether the evidence changed after c
 If evidence integrity verification fails, policy evaluation should not run. The correct result is not `pass` or `fail`; it is `invalid_evidence`.
 
 See [`examples/invalid_evidence_result.json`](examples/invalid_evidence_result.json).
+
+### Evidence replay
+
+Replay is the act of reusing the same sealed evidence object to verify whether the audit conclusion can still be reproduced.
+
+A replay test should preserve three bindings:
+
+- evidence object to integrity hash
+- verified evidence to policy evaluation
+- policy result to audit narrative
+
+If the evidence changes, replay stops.
+
+If the policy changes, the replay conclusion must declare it.
+
+If neither changes, the result should survive.
 
 ### Fact derivation
 
@@ -251,6 +310,7 @@ This demo shows that a technical compliance finding can be built from a verifiab
 - derived facts
 - policy evaluation
 - audit narrative generation
+- evidence replay
 
 It demonstrates a pattern:
 
@@ -265,6 +325,8 @@ It does not replace auditors, risk owners, regulatory interpretation, or legal a
 It does not cover governance, outsourcing, incident response, change management, access control, resilience, or third-party risk.
 
 It does not claim that SHA256 alone is sufficient for enterprise-grade evidence assurance. Production systems may require signed manifests, trusted timestamping, immutable storage, key management, approval workflows, and independent validation.
+
+It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Implementation details will be handled in later technical briefings and repository increments.
 
 ## Repository Structure
 
@@ -289,6 +351,7 @@ evidence-validation-pipeline/
 ├── ansible/
 │   └── collect_system_info.yml
 ├── docs/
+│   ├── evidence-replay-checklist.md
 │   └── week-3-evidence-before-reporting.md
 └── examples/
     ├── invalid_evidence_result.json
@@ -306,6 +369,7 @@ evidence-validation-pipeline/
 - failure observability
 - evidence events
 - replayable evidence
+- evidence replay
 - verifiable compliance
 - evidence-as-code
 - policy-as-code
@@ -316,6 +380,7 @@ evidence-validation-pipeline/
 - timestamped evidence
 - integrity verification
 - invalid evidence
+- evidence replay checklist
 
 ## Notes
 
