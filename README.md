@@ -109,6 +109,8 @@ The article introduces an evidence replay self-test. It asks whether a sealed ev
 
 **What a MAS TRM Checklist Cannot Prove**
 
+Substack: https://www.codeyourcompliance.com/p/what-a-mas-trm-checklist-cannot-prove
+
 The article draws a hard boundary between checklist completion and proof. A MAS TRM checklist can organize compliance work. It cannot prove system state at a specific point in time.
 
 The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md), updated with checklist-to-evidence-requirement mapping, `invalid_evidence`, and the boundary between checklist, evidence, policy result, and report.
