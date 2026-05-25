@@ -19,7 +19,7 @@ This repository is part of **CodeYourCompliance**, a public technical project ex
 - Website: https://www.codeyourcompliance.com
 - GitHub organization: https://github.com/codeyourcompliance
 - Original repository: https://github.com/codeyourcompliance/evidence-validation-pipeline
-- Companion article: https://www.codeyourcompliance.com/p/compliance-is-not-documentation-it-18e
+- Companion article series: https://www.codeyourcompliance.com
 
 This repository is the original public CodeYourCompliance implementation track for the `evidence-validation-pipeline` pattern.
 
@@ -27,19 +27,25 @@ If you reference, fork, adapt, or discuss this project, please preserve attribut
 
 ## Boundary
 
-MAS TRM-inspired means engineering interpretation. It does not mean MAS approval, certified compliance, legal advice, regulatory advice, or audit sufficiency.
+MAS TRM-inspired means engineering interpretation. It does not mean MAS approval, certified compliance, legal advice, regulatory advice, audit sufficiency, or prescribed implementation.
 
-This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, or any specific implementation pattern.
+This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, evidence replay, evidence requirements, or any specific implementation pattern.
 
-The purpose is narrower: to explore how technical compliance evidence can be collected, timestamped, sealed, verified, evaluated, and replayed.
+The purpose is narrower: to explore how technical compliance evidence can be collected, timestamped, sealed, verified, evaluated, replayed, and mapped to audit narratives.
 
 ## Position
 
-A report is downstream.
+A checklist is intake.
 
-It cannot rescue stale evidence. It cannot repair a missing timestamp. It cannot prove that a configuration remained unchanged after collection.
+A report is narrative.
 
-This repository treats compliance automation as an evidence pipeline, not a report generator.
+Evidence is proof material.
+
+A completed checklist cannot prove that a control was true at a specific point in time.
+
+A report cannot rescue stale evidence. It cannot repair a missing timestamp. It cannot prove that a configuration remained unchanged after collection.
+
+This repository treats compliance automation as an evidence pipeline, not a checklist tracker or report generator.
 
 The pipeline must make control claims harder to fake, harder to mutate, and easier to replay.
 
@@ -59,6 +65,7 @@ The minimal pipeline is:
 6. Evaluate the facts with policy-as-code.
 7. Generate a MAS TRM-inspired audit narrative.
 8. Replay the same sealed evidence object later to test whether the conclusion still holds.
+9. Map checklist items to explicit evidence requirements instead of treating checklist completion as proof.
 
 The first demo scenario uses Apache HTTPD with TLS enabled. The target system is intentionally configured with a TLS certificate approaching expiry, such as within 48 hours, so the pipeline can produce a clear technical finding.
 
@@ -98,6 +105,14 @@ Substack: https://www.codeyourcompliance.com/p/can-your-audit-evidence-survive-r
 
 The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later. The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
+### Week 5
+
+**What a MAS TRM Checklist Cannot Prove**
+
+The article draws a hard boundary between checklist completion and proof. A MAS TRM checklist can organize compliance work. It cannot prove system state at a specific point in time.
+
+The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md), updated with checklist-to-evidence-requirement mapping, `invalid_evidence`, and the boundary between checklist, evidence, policy result, and report.
+
 ## Content Relationship
 
 - **Substack articles:** explain the problem language and architecture thesis.
@@ -105,7 +120,8 @@ The article introduces an evidence replay self-test. It asks whether a sealed ev
 - **Week 2 increment:** adds the first read-only collection pattern.
 - **Week 3 increment:** adds the evidence-first audit boundary, minimal evidence object, and invalid evidence result example.
 - **Week 4 increment:** adds the evidence replay checklist and formalizes the replay boundary: same evidence, same policy, same conclusion.
-- **Future releases:** will extend schema validation, integrity verification, replay examples, and OPA/Rego policy examples.
+- **Week 5 increment:** updates the replay checklist so checklist rows map to evidence requirements. It separates checklist, control, evidence, policy result, report, and proof material.
+- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, and OPA/Rego policy examples.
 
 ## Architecture Overview
 
@@ -127,6 +143,30 @@ System State
 ```
 
 The audit boundary starts before the report. Bad evidence should not produce a clean result.
+
+## Checklist Gap
+
+A checklist row is not proof.
+
+A checklist row should map to an evidence requirement.
+
+For example:
+
+| Checklist item | What it claims | What it cannot prove | Evidence fields needed |
+|---|---|---|---|
+| TLS enabled | TLS is configured | When and where TLS state was observed | `observed_at`, `source_system`, `collector` |
+| Certificate valid | Certificate was valid | Whether validity came from runtime state or human claim | `certificate_not_after`, `collection_method` |
+| Logging enabled | Logs are enabled | Whether logs were actually generated and retained | `log_source`, `sample_window` |
+| Access reviewed | User access was reviewed | Whether the user list came from the authoritative source | `identity_source`, `exported_at` |
+| Vendor control confirmed | Vendor control exists | Whether this is evidence or only a vendor statement | `evidence_type`, `attestation_date` |
+
+The checklist organizes the work.
+
+The evidence requirement defines what must be collected.
+
+The policy result must reference the same evidence object that was evaluated.
+
+The report narrates from those objects. It does not replace them.
 
 ## Week 2 Increment: Read-Only Evidence Collection
 
@@ -211,6 +251,40 @@ See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
 This increment keeps implementation details out of the public article. The public artifact defines the replay test. Later technical briefings can cover schema design, hash verification flow, OPA input/output contracts, Rego skeletons, and replay folder structure.
 
+## Week 5 Increment: Evidence Requirements for Checklist Rows
+
+Week 5 adds a checklist gap layer.
+
+The goal is to stop treating completed checklist rows as proof.
+
+A MAS TRM checklist can track:
+
+- owner
+- status
+- review progress
+- attached files
+- control coverage
+
+It cannot prove:
+
+- when evidence was collected
+- which source system produced it
+- who or what collected it
+- whether the collector changed the target system
+- whether the evidence was modified after collection
+- whether the evidence is still fresh
+- whether the policy result used the same evidence object
+
+The updated replay checklist now includes:
+
+- checklist-to-evidence-requirement mapping
+- minimum evidence fields for common checklist items
+- `invalid_evidence` as a distinct audit state
+- observation vs remediation boundaries
+- `manual_claim_only` and `stale_evidence` outcome labels
+
+See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+
 ## Components
 
 ### Read-only collection
@@ -242,6 +316,7 @@ The evidence package should include:
 - integrity metadata
 - policy evaluation reference
 - replay status or replay readiness label
+- freshness window or freshness status
 
 See [`examples/sample_evidence.json`](examples/sample_evidence.json).
 
@@ -249,7 +324,26 @@ For the Week 2 system baseline example, see [`examples/sample_system_baseline.js
 
 For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
 
-For the Week 4 replay checklist, see [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+For the Week 4 and Week 5 replay checklist, see [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+
+### Evidence requirements
+
+Evidence requirements define what a checklist row must point to before the row can support proof.
+
+A minimal evidence requirement should state:
+
+- required fields
+- required source type
+- allowed collection method
+- freshness expectation
+- integrity verification requirement
+- policy result reference requirement
+
+For example, `TLS certificate valid` should require certificate validity metadata, observation time, source system, collector, collection method, integrity hash, and policy result reference.
+
+A screenshot or manually attached file may support narrative review.
+
+It should not be treated as replayable proof unless it satisfies the evidence requirement.
 
 ### Integrity verification
 
@@ -311,6 +405,7 @@ This demo shows that a technical compliance finding can be built from a verifiab
 - policy evaluation
 - audit narrative generation
 - evidence replay
+- checklist-to-evidence-requirement mapping
 
 It demonstrates a pattern:
 
@@ -326,7 +421,7 @@ It does not cover governance, outsourcing, incident response, change management,
 
 It does not claim that SHA256 alone is sufficient for enterprise-grade evidence assurance. Production systems may require signed manifests, trusted timestamping, immutable storage, key management, approval workflows, and independent validation.
 
-It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Implementation details will be handled in later technical briefings and repository increments.
+It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Week 5 adds checklist-to-evidence-requirement mapping. Implementation details will be handled in later technical briefings and repository increments.
 
 ## Repository Structure
 
@@ -364,10 +459,14 @@ evidence-validation-pipeline/
 ## Related Concepts
 
 - MAS TRM-inspired compliance automation
+- MAS TRM checklist
+- MAS TRM compliance checklist
 - read-only evidence collection
 - non-invasive collection
 - failure observability
 - evidence events
+- evidence requirements
+- checklist-to-evidence mapping
 - replayable evidence
 - evidence replay
 - verifiable compliance
@@ -375,11 +474,17 @@ evidence-validation-pipeline/
 - policy-as-code
 - cryptographic evidence
 - audit automation
+- audit readiness
 - TLS certificate lifecycle
 - evidence provenance
 - timestamped evidence
+- source-bound evidence
+- integrity-checked evidence
 - integrity verification
 - invalid evidence
+- invalid_evidence
+- manual_claim_only
+- stale_evidence
 - evidence replay checklist
 
 ## Notes
