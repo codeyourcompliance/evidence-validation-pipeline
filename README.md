@@ -287,7 +287,6 @@ The minimum replay test asks:
 - Can the same evidence object be re-evaluated later?
 - Can the audit narrative point back to the verified evidence object?
 
-See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
 This increment keeps implementation details out of the public article. The public artifact defines the replay test. Later technical briefings can cover schema design, hash verification flow, OPA input/output contracts, Rego skeletons, and replay folder structure.
 
@@ -323,7 +322,6 @@ The updated replay checklist now includes:
 - observation vs remediation boundaries
 - `manual_claim_only` and `stale_evidence` outcome labels
 
-See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
 ## Week 6 Increment: Screenshot Evidence Classification
 
@@ -356,7 +354,6 @@ The new screenshot checklist includes:
 - TLS certificate screenshot example
 - `primary_evidence`, `supporting_artifact`, `manual_claim_only`, `not_machine_verifiable`, `invalid_evidence`, and `stale_artifact` outcome labels
 
-See [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md).
 
 ## Components
 
@@ -398,9 +395,6 @@ For the Week 2 system baseline example, see [`examples/sample_system_baseline.js
 
 For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
 
-For the Week 4 and Week 5 replay checklist, see [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
-
-For the Week 6 screenshot evidence gap checklist, see [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md).
 
 ### Evidence requirements
 
