@@ -29,13 +29,15 @@ If you reference, fork, adapt, or discuss this project, please preserve attribut
 
 MAS TRM-inspired means engineering interpretation. It does not mean MAS approval, certified compliance, legal advice, regulatory advice, audit sufficiency, or prescribed implementation.
 
-This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, evidence replay, evidence requirements, or any specific implementation pattern.
+This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, evidence replay, evidence requirements, artifact classification, or any specific implementation pattern.
 
-The purpose is narrower: to explore how technical compliance evidence can be collected, timestamped, sealed, verified, evaluated, replayed, and mapped to audit narratives.
+The purpose is narrower: to explore how technical compliance evidence can be collected, timestamped, sealed, verified, evaluated, replayed, classified, and mapped to audit narratives.
 
 ## Position
 
 A checklist is intake.
+
+A screenshot is a supporting artifact.
 
 A report is narrative.
 
@@ -43,9 +45,11 @@ Evidence is proof material.
 
 A completed checklist cannot prove that a control was true at a specific point in time.
 
+A screenshot can help explain what someone saw. It should not silently replace source-bound, timestamped, integrity-checked evidence.
+
 A report cannot rescue stale evidence. It cannot repair a missing timestamp. It cannot prove that a configuration remained unchanged after collection.
 
-This repository treats compliance automation as an evidence pipeline, not a checklist tracker or report generator.
+This repository treats compliance automation as an evidence pipeline, not a checklist tracker, screenshot folder, or report generator.
 
 The pipeline must make control claims harder to fake, harder to mutate, and easier to replay.
 
@@ -66,6 +70,7 @@ The minimal pipeline is:
 7. Generate a MAS TRM-inspired audit narrative.
 8. Replay the same sealed evidence object later to test whether the conclusion still holds.
 9. Map checklist items to explicit evidence requirements instead of treating checklist completion as proof.
+10. Classify screenshots and other artifacts by evidentiary role before using them in reporting or policy evaluation.
 
 The first demo scenario uses Apache HTTPD with TLS enabled. The target system is intentionally configured with a TLS certificate approaching expiry, such as within 48 hours, so the pipeline can produce a clear technical finding.
 
@@ -115,6 +120,14 @@ The article draws a hard boundary between checklist completion and proof. A MAS 
 
 The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md), updated with checklist-to-evidence-requirement mapping, `invalid_evidence`, and the boundary between checklist, evidence, policy result, and report.
 
+### Week 6
+
+**A Screenshot Is a Supporting Artifact, Not a Proof Object**
+
+The article classifies screenshots as supporting artifacts unless they satisfy the structure required for primary machine-verifiable evidence.
+
+The companion artifact is [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md), which defines evidence admissibility tiers and screenshot classification checks.
+
 ## Content Relationship
 
 - **Substack articles:** explain the problem language and architecture thesis.
@@ -123,7 +136,8 @@ The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-re
 - **Week 3 increment:** adds the evidence-first audit boundary, minimal evidence object, and invalid evidence result example.
 - **Week 4 increment:** adds the evidence replay checklist and formalizes the replay boundary: same evidence, same policy, same conclusion.
 - **Week 5 increment:** updates the replay checklist so checklist rows map to evidence requirements. It separates checklist, control, evidence, policy result, report, and proof material.
-- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, and OPA/Rego policy examples.
+- **Week 6 increment:** adds screenshot evidence classification. It separates primary evidence, supporting artifact, manual claim, not machine-verifiable artifact, and invalid evidence.
+- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, artifact classification, and OPA/Rego policy examples.
 
 ## Architecture Overview
 
@@ -169,6 +183,31 @@ The evidence requirement defines what must be collected.
 The policy result must reference the same evidence object that was evaluated.
 
 The report narrates from those objects. It does not replace them.
+
+## Screenshot Evidence Gap
+
+A screenshot is a view.
+
+It is not the system state.
+
+A screenshot may show what an operator or reviewer saw at a point in time. It may help explain an audit narrative.
+
+It should not automatically become the proof object.
+
+Use evidence admissibility tiers before policy evaluation:
+
+| Tier | Artifact type | Can support policy evaluation? | Example |
+|---|---|---|---|
+| Primary machine-verifiable evidence | Source-bound system evidence | Yes | API response, config export, runtime certificate metadata |
+| Supporting artifact | Human-readable context | Sometimes, but usually not alone | Screenshot, UI capture, dashboard image |
+| Manual claim | Human or vendor assertion | No, unless independently verified | Email confirmation, meeting note, vendor statement |
+| Invalid evidence | Unreliable or unverifiable artifact | No | Hash mismatch, missing source, stale export, edited image |
+
+The screenshot may explain the finding.
+
+The primary evidence should support the proof.
+
+See [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md).
 
 ## Week 2 Increment: Read-Only Evidence Collection
 
@@ -287,6 +326,39 @@ The updated replay checklist now includes:
 
 See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
+## Week 6 Increment: Screenshot Evidence Classification
+
+Week 6 adds an evidence admissibility layer for screenshots and visual artifacts.
+
+The goal is to stop treating screenshots as proof objects by default.
+
+A screenshot can support:
+
+- human review
+- audit narrative
+- workflow explanation
+- UI context
+- reviewer understanding
+
+It cannot prove by itself:
+
+- when the underlying system state was observed
+- which source system produced the data
+- who or what collected it
+- whether the page was refreshed
+- whether the image changed after capture
+- whether the policy result evaluated the same object
+
+The new screenshot checklist includes:
+
+- evidence admissibility tiers
+- screenshot classification test
+- suggested screenshot metadata
+- TLS certificate screenshot example
+- `primary_evidence`, `supporting_artifact`, `manual_claim_only`, `not_machine_verifiable`, `invalid_evidence`, and `stale_artifact` outcome labels
+
+See [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md).
+
 ## Components
 
 ### Read-only collection
@@ -319,6 +391,7 @@ The evidence package should include:
 - policy evaluation reference
 - replay status or replay readiness label
 - freshness window or freshness status
+- artifact classification where supporting materials are included
 
 See [`examples/sample_evidence.json`](examples/sample_evidence.json).
 
@@ -327,6 +400,8 @@ For the Week 2 system baseline example, see [`examples/sample_system_baseline.js
 For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
 
 For the Week 4 and Week 5 replay checklist, see [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+
+For the Week 6 screenshot evidence gap checklist, see [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md).
 
 ### Evidence requirements
 
@@ -346,6 +421,21 @@ For example, `TLS certificate valid` should require certificate validity metadat
 A screenshot or manually attached file may support narrative review.
 
 It should not be treated as replayable proof unless it satisfies the evidence requirement.
+
+### Artifact classification
+
+Artifacts should be classified before they are used in a report or policy evaluation.
+
+Useful labels include:
+
+- `primary_evidence`
+- `supporting_artifact`
+- `manual_claim_only`
+- `not_machine_verifiable`
+- `invalid_evidence`
+- `stale_artifact`
+
+This prevents reports from laundering weak artifacts into proof.
 
 ### Integrity verification
 
@@ -394,6 +484,10 @@ OPA is not the audit system. It is a policy evaluator.
 
 The final report should translate the policy result into an audit narrative. It should avoid overclaiming regulatory meaning.
 
+Screenshots may support the narrative.
+
+They should not replace the proof object.
+
 See [`examples/sample_report.md`](examples/sample_report.md).
 
 ## What This Demo Shows
@@ -408,6 +502,7 @@ This demo shows that a technical compliance finding can be built from a verifiab
 - audit narrative generation
 - evidence replay
 - checklist-to-evidence-requirement mapping
+- artifact classification
 
 It demonstrates a pattern:
 
@@ -421,9 +516,11 @@ It does not replace auditors, risk owners, regulatory interpretation, or legal a
 
 It does not cover governance, outsourcing, incident response, change management, access control, resilience, or third-party risk.
 
+It does not claim that screenshots are never useful. It claims their evidentiary role must be classified.
+
 It does not claim that SHA256 alone is sufficient for enterprise-grade evidence assurance. Production systems may require signed manifests, trusted timestamping, immutable storage, key management, approval workflows, and independent validation.
 
-It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Week 5 adds checklist-to-evidence-requirement mapping. Implementation details will be handled in later technical briefings and repository increments.
+It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Week 5 adds checklist-to-evidence-requirement mapping. Week 6 adds screenshot evidence classification. Implementation details will be handled in later technical briefings and repository increments.
 
 ## Repository Structure
 
@@ -449,6 +546,7 @@ evidence-validation-pipeline/
 │   └── collect_system_info.yml
 ├── docs/
 │   ├── evidence-replay-checklist.md
+│   ├── screenshot-evidence-gap.md
 │   └── week-3-evidence-before-reporting.md
 └── examples/
     ├── invalid_evidence_result.json
@@ -482,11 +580,18 @@ evidence-validation-pipeline/
 - timestamped evidence
 - source-bound evidence
 - integrity-checked evidence
+- primary machine-verifiable evidence
+- supporting artifact
+- screenshot evidence gap
+- evidence admissibility tiers
+- proof object
 - integrity verification
 - invalid evidence
 - invalid_evidence
 - manual_claim_only
+- not_machine_verifiable
 - stale_evidence
+- stale_artifact
 - evidence replay checklist
 
 ## Notes
