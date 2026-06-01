@@ -108,7 +108,7 @@ The article sharpens the core boundary behind this repository: report automation
 
 Substack: https://www.codeyourcompliance.com/p/can-your-audit-evidence-survive-replay
 
-The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later. The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later. 
 
 ### Week 5
 
@@ -118,15 +118,14 @@ Substack: https://www.codeyourcompliance.com/p/what-a-mas-trm-checklist-cannot-p
 
 The article draws a hard boundary between checklist completion and proof. A MAS TRM checklist can organize compliance work. It cannot prove system state at a specific point in time.
 
-The companion artifact is [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md), updated with checklist-to-evidence-requirement mapping, `invalid_evidence`, and the boundary between checklist, evidence, policy result, and report.
-
 ### Week 6
 
 **A Screenshot Is a Supporting Artifact, Not a Proof Object**
 
+Substack: https://www.codeyourcompliance.com/p/a-screenshot-is-a-supporting-artifact
+
 The article classifies screenshots as supporting artifacts unless they satisfy the structure required for primary machine-verifiable evidence.
 
-The companion artifact is [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md), which defines evidence admissibility tiers and screenshot classification checks.
 
 ## Content Relationship
 
