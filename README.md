@@ -181,6 +181,8 @@ These articles apply the same claim-to-evidence discipline to AI vendor review a
 - **Week 9 increment:** separates tool approval from workflow proof.
 - **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, artifact classification, OPA/Rego policy examples, and workflow-level evidence examples.
 
+For current implementation boundaries, see [`docs/current-implementation-status.md`](docs/current-implementation-status.md).
+
 ## Architecture Overview
 
 ![Evidence Validation Pipeline](assets/images/Evidence%20Validation%20Pipeline.png)
@@ -446,6 +448,8 @@ It does not prove that a specific AI-supported workflow action was controlled.
 
 Workflow-level evidence needs task scope, data scope, accepted output, review status, policy version, failure path, and accountable owner.
 
+See [`docs/workflow-proof-boundary.md`](docs/workflow-proof-boundary.md).
+
 ## Components
 
 ### Read-only collection
@@ -612,6 +616,8 @@ It does not claim that SHA256 alone is sufficient for enterprise-grade evidence 
 
 It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Week 5 adds checklist-to-evidence-requirement mapping. Week 6 adds screenshot evidence classification. Later increments add accountable conclusion, workflow evidence, and workflow proof boundaries. Implementation details will be handled in later technical briefings and repository increments.
 
+For the implementation boundary, see [`docs/current-implementation-status.md`](docs/current-implementation-status.md).
+
 ## Repository Structure
 
 Planned structure:
@@ -635,9 +641,11 @@ evidence-validation-pipeline/
 ├── ansible/
 │   └── collect_system_info.yml
 ├── docs/
+│   ├── current-implementation-status.md
 │   ├── evidence-replay-checklist.md
 │   ├── screenshot-evidence-gap.md
-│   └── week-3-evidence-before-reporting.md
+│   ├── week-3-evidence-before-reporting.md
+│   └── workflow-proof-boundary.md
 └── examples/
     ├── invalid_evidence_result.json
     ├── minimal_evidence_object.json
@@ -688,6 +696,7 @@ evidence-validation-pipeline/
 - workflow proof
 - tool approval
 - AI-supported workflow action
+- implementation status
 
 ## Notes
 
