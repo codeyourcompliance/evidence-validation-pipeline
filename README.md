@@ -78,7 +78,9 @@ The first demo scenario uses Apache HTTPD with TLS enabled. The target system is
 
 This repository accompanies the CodeYourCompliance article series on MAS TRM-inspired compliance automation.
 
-### Week 1
+### Core Evidence Pipeline Series
+
+#### Week 1
 
 **Compliance Is Not Documentation. It Is Evidence That Can Be Replayed.**
 
@@ -86,15 +88,15 @@ Substack: https://www.codeyourcompliance.com/p/compliance-is-not-documentation-i
 
 The article introduces the core thesis behind this repository: compliance evidence should be collectible, timestamped, integrity-checked, machine-evaluable, and replayable.
 
-### Week 2
+#### Week 2
 
-**Read-Only Evidence Collection Is Not a Convenience. It Is an Audit Boundary.**
+**Read-Only Collection as an Audit Boundary**
 
 Substack: https://www.codeyourcompliance.com/p/read-only-collection-as-an-audit
 
 The article explains why evidence collection should observe the target system without modifying it. Collection is evidence work. Remediation belongs in a separate workflow.
 
-### Week 3
+#### Week 3
 
 **Compliance Automation Starts at Evidence.**
 
@@ -102,15 +104,15 @@ Substack: https://www.codeyourcompliance.com/p/compliance-automation-starts-at-e
 
 The article sharpens the core boundary behind this repository: report automation is not evidence automation. It explains why policy evaluation should only occur after evidence has been collected, timestamped, sealed, and verified.
 
-### Week 4
+#### Week 4
 
 **Can Your Audit Evidence Survive Replay?**
 
 Substack: https://www.codeyourcompliance.com/p/can-your-audit-evidence-survive-replay
 
-The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later. 
+The article introduces an evidence replay self-test. It asks whether a sealed evidence object can be verified, evaluated, and replayed later.
 
-### Week 5
+#### Week 5
 
 **What a MAS TRM Checklist Cannot Prove**
 
@@ -118,7 +120,7 @@ Substack: https://www.codeyourcompliance.com/p/what-a-mas-trm-checklist-cannot-p
 
 The article draws a hard boundary between checklist completion and proof. A MAS TRM checklist can organize compliance work. It cannot prove system state at a specific point in time.
 
-### Week 6
+#### Week 6
 
 **A Screenshot Is a Supporting Artifact, Not a Proof Object**
 
@@ -126,6 +128,44 @@ Substack: https://www.codeyourcompliance.com/p/a-screenshot-is-a-supporting-arti
 
 The article classifies screenshots as supporting artifacts unless they satisfy the structure required for primary machine-verifiable evidence.
 
+#### Week 7
+
+**A Generated Report Is Not an Accountable Audit Conclusion**
+
+Substack: https://www.codeyourcompliance.com/p/a-generated-report-is-not-an-accountable
+
+The article separates evidence processing from accountable audit judgment. Generated reports can support review, but they do not own the conclusion.
+
+#### Week 8
+
+**Go-Live Is Not Workflow Evidence**
+
+Substack: https://www.codeyourcompliance.com/p/go-live-is-not-workflow-evidence
+
+The article separates delivery evidence from workflow evidence. A green dashboard may show deployment activity. It does not prove that the operating workflow changed or that the evidence can survive review.
+
+#### Week 9
+
+**Tool Approval Is Not Workflow Proof**
+
+Substack: https://www.codeyourcompliance.com/p/tool-approval-is-not-workflow-proof
+
+The article separates tool approval from workflow proof. Approval controls entry. Workflow-level evidence controls consequence.
+
+### Adjacent Public Evidence Work
+
+These articles apply the same claim-to-evidence discipline to AI vendor review and public trust signals. They are adjacent to this repository. They are not implementation increments of the evidence validation pipeline.
+
+- **AI Vendor Risk Assessment: Vendor Claim Is Not Evidence**  
+  https://www.codeyourcompliance.com/p/start-here-ai-vendor-risk-pack
+- **AI Vendor Risk Is Not a Questionnaire Problem**  
+  https://www.codeyourcompliance.com/p/ai-vendor-risk-is-not-a-questionnaire
+- **Vendor Says It Does Not Train on Your Data. What Evidence Should You Ask For?**  
+  https://www.codeyourcompliance.com/p/vendor-says-it-does-not-train-on
+- **A Trust Center Is Not an AI Vendor Risk Assessment**  
+  https://www.codeyourcompliance.com/p/a-trust-center-is-not-an-ai-vendor
+- **Introducing the Trust Signal Directory**  
+  https://www.codeyourcompliance.com/p/introducing-the-trust-signal-directory
 
 ## Content Relationship
 
@@ -136,7 +176,10 @@ The article classifies screenshots as supporting artifacts unless they satisfy t
 - **Week 4 increment:** adds the evidence replay checklist and formalizes the replay boundary: same evidence, same policy, same conclusion.
 - **Week 5 increment:** updates the replay checklist so checklist rows map to evidence requirements. It separates checklist, control, evidence, policy result, report, and proof material.
 - **Week 6 increment:** adds screenshot evidence classification. It separates primary evidence, supporting artifact, manual claim, not machine-verifiable artifact, and invalid evidence.
-- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, artifact classification, and OPA/Rego policy examples.
+- **Week 7 increment:** separates evidence processing from accountable audit judgment.
+- **Week 8 increment:** separates delivery evidence from workflow evidence.
+- **Week 9 increment:** separates tool approval from workflow proof.
+- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, artifact classification, OPA/Rego policy examples, and workflow-level evidence examples.
 
 ## Architecture Overview
 
@@ -262,6 +305,8 @@ If integrity verification fails, OPA should not run. The correct result is `inva
 
 See [`examples/invalid_evidence_result.json`](examples/invalid_evidence_result.json).
 
+For the expanded Week 3 note, see [`docs/week-3-evidence-before-reporting.md`](docs/week-3-evidence-before-reporting.md).
+
 ## Week 4 Increment: Evidence Replay Self-Test
 
 Week 4 adds the reader-facing replay test.
@@ -287,6 +332,7 @@ The minimum replay test asks:
 - Can the same evidence object be re-evaluated later?
 - Can the audit narrative point back to the verified evidence object?
 
+See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
 
 This increment keeps implementation details out of the public article. The public artifact defines the replay test. Later technical briefings can cover schema design, hash verification flow, OPA input/output contracts, Rego skeletons, and replay folder structure.
 
@@ -322,7 +368,6 @@ The updated replay checklist now includes:
 - observation vs remediation boundaries
 - `manual_claim_only` and `stale_evidence` outcome labels
 
-
 ## Week 6 Increment: Screenshot Evidence Classification
 
 Week 6 adds an evidence admissibility layer for screenshots and visual artifacts.
@@ -354,6 +399,52 @@ The new screenshot checklist includes:
 - TLS certificate screenshot example
 - `primary_evidence`, `supporting_artifact`, `manual_claim_only`, `not_machine_verifiable`, `invalid_evidence`, and `stale_artifact` outcome labels
 
+See [`docs/screenshot-evidence-gap.md`](docs/screenshot-evidence-gap.md).
+
+## Week 7 Increment: Accountable Audit Conclusion Boundary
+
+Week 7 separates evidence processing from accountable audit judgment.
+
+A generated report can summarize evidence, policy results, and exceptions.
+
+It does not own the audit conclusion.
+
+For CYC, the boundary is:
+
+```text
+verified evidence
+-> policy result
+-> generated narrative
+-> accountable review
+```
+
+The reviewer owns the conclusion.
+
+The generated report should preserve the evidence basis, limitation, policy version, and review responsibility.
+
+## Week 8 Increment: Workflow Evidence Boundary
+
+Week 8 separates delivery evidence from workflow evidence.
+
+A go-live record can show that a system was deployed.
+
+It does not prove that the workflow changed, that operators used the new path, that exceptions were handled, or that evidence can survive replay.
+
+For CYC, delivery evidence belongs upstream of workflow proof.
+
+## Week 9 Increment: Tool Approval vs Workflow Proof
+
+Week 9 separates tool approval from workflow proof.
+
+Tool approval controls entry.
+
+Workflow proof controls consequence.
+
+A tool approval record may show that a system is permitted for use.
+
+It does not prove that a specific AI-supported workflow action was controlled.
+
+Workflow-level evidence needs task scope, data scope, accepted output, review status, policy version, failure path, and accountable owner.
 
 ## Components
 
@@ -394,7 +485,6 @@ See [`examples/sample_evidence.json`](examples/sample_evidence.json).
 For the Week 2 system baseline example, see [`examples/sample_system_baseline.json`](examples/sample_system_baseline.json).
 
 For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
-
 
 ### Evidence requirements
 
@@ -456,6 +546,8 @@ If the policy changes, the replay conclusion must declare it.
 
 If neither changes, the result should survive.
 
+See [`docs/evidence-replay-checklist.md`](docs/evidence-replay-checklist.md).
+
 ### Fact derivation
 
 Python can be used to derive facts from raw evidence. For the TLS demo, derived facts may include:
@@ -496,6 +588,9 @@ This demo shows that a technical compliance finding can be built from a verifiab
 - evidence replay
 - checklist-to-evidence-requirement mapping
 - artifact classification
+- accountable conclusion boundary
+- workflow evidence boundary
+- workflow proof boundary
 
 It demonstrates a pattern:
 
@@ -507,13 +602,15 @@ This demo does not prove complete MAS TRM compliance.
 
 It does not replace auditors, risk owners, regulatory interpretation, or legal advice.
 
-It does not cover governance, outsourcing, incident response, change management, access control, resilience, or third-party risk.
+It does not cover outsourcing, incident response, change management, resilience, or third-party risk.
+
+It does not yet implement a full workflow-proof engine.
 
 It does not claim that screenshots are never useful. It claims their evidentiary role must be classified.
 
 It does not claim that SHA256 alone is sufficient for enterprise-grade evidence assurance. Production systems may require signed manifests, trusted timestamping, immutable storage, key management, approval workflows, and independent validation.
 
-It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Week 5 adds checklist-to-evidence-requirement mapping. Week 6 adds screenshot evidence classification. Implementation details will be handled in later technical briefings and repository increments.
+It does not yet provide a complete replay implementation. Week 4 adds the public replay checklist. Week 5 adds checklist-to-evidence-requirement mapping. Week 6 adds screenshot evidence classification. Later increments add accountable conclusion, workflow evidence, and workflow proof boundaries. Implementation details will be handled in later technical briefings and repository increments.
 
 ## Repository Structure
 
@@ -586,6 +683,11 @@ evidence-validation-pipeline/
 - stale_evidence
 - stale_artifact
 - evidence replay checklist
+- accountable audit conclusion
+- workflow evidence
+- workflow proof
+- tool approval
+- AI-supported workflow action
 
 ## Notes
 
@@ -594,6 +696,5 @@ Official MAS page: https://www.mas.gov.sg/regulation/guidelines/technology-risk-
 
 **OPA** refers to Open Policy Agent. **Rego** is its policy language.
 Official OPA documentation: https://www.openpolicyagent.org/docs
-
 
 ![codeyourcompliance-banner-light-master](assets/images/codeyourcompliance-banner-light-master.png)
