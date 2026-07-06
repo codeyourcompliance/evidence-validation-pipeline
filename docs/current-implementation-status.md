@@ -17,10 +17,13 @@ The repository currently includes:
 | TLS lifecycle evidence example | `examples/sample_evidence.json` |
 | Minimum replay-aware evidence object | `examples/minimal_evidence_object.json` |
 | Invalid evidence result | `examples/invalid_evidence_result.json` |
+| Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
+| Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
 | Evidence replay checklist | `docs/evidence-replay-checklist.md` |
 | Screenshot evidence classification | `docs/screenshot-evidence-gap.md` |
 | Evidence-before-reporting boundary | `docs/week-3-evidence-before-reporting.md` |
+| Workflow-proof boundary | `docs/workflow-proof-boundary.md` |
 
 ## Modeled
 
@@ -49,9 +52,12 @@ The repository does not yet implement:
 - immutable evidence storage
 - OPA/Rego policy files
 - replay runner
-- workflow-proof evidence objects
 - workflow-level policy evaluation
 - end-to-end evidence package generation
+
+The workflow-proof examples are synthetic evidence objects.
+
+They are not a full workflow-proof engine.
 
 ## Design Rule
 
