@@ -1,0 +1,52 @@
+{
+  "schema_version": "0.1.0",
+  "run_id": "run-invalid-workflow-proof-001",
+  "evidence_id": "evd-workflow-ai-review-002",
+  "stage": "workflow_proof_validation",
+  "status": "invalid_evidence",
+  "reason": "Workflow proof cannot be produced because the review owner is missing from the workflow action record.",
+  "missing_fields": [
+    "observations.workflow.workflow_action.review_owner"
+  ],
+  "observed_object": {
+    "type": "workflow_action",
+    "name": "synthetic-ai-assisted-access-review",
+    "workflow_action_id": "wf-act-002"
+  },
+  "collector": {
+    "name": "workflow-evidence-collector",
+    "version": "0.1.0",
+    "mode": "read_only",
+    "method": "synthetic_log_export",
+    "changed_target_system": false
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-07-06T04:45:00Z",
+    "sealed_at_utc": "2026-07-06T04:45:08Z"
+  },
+  "integrity": {
+    "algorithm": "SHA256",
+    "canonicalization": "json-canonical-form-v0",
+    "evidence_hash": "sha256:REPLACE_WITH_COMPUTED_HASH",
+    "verification_status": "verified"
+  },
+  "workflow_validation": {
+    "tool_approval_present": true,
+    "workflow_action_identified": true,
+    "task_scope_present": true,
+    "data_scope_present": true,
+    "review_required": true,
+    "review_owner_present": false,
+    "failure_path_defined": true,
+    "workflow_proof_ready": false
+  },
+  "policy_evaluation": {
+    "engine": "OPA",
+    "executed": false,
+    "reason": "Policy evaluation is blocked because the workflow proof evidence is incomplete."
+  },
+  "audit_boundary": {
+    "rule": "Workflow proof requires a review owner when review is required.",
+    "statement": "Incomplete workflow evidence should not produce a pass or fail result."
+  }
+}
