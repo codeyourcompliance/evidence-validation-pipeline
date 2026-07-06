@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_id": "evd-workflow-ai-review-001",
+  "evidence_type": "ai_supported_workflow_action",
+  "observed_object": {
+    "type": "workflow_action",
+    "name": "synthetic-ai-assisted-access-review",
+    "workflow_action_id": "wf-act-001"
+  },
+  "source": {
+    "environment": "lab",
+    "source_system": "synthetic-workflow-log",
+    "collection_scope": [
+      "tool_approval_record",
+      "workflow_action_record",
+      "review_record",
+      "failure_path_record"
+    ]
+  },
+  "collector": {
+    "name": "workflow-evidence-collector",
+    "version": "0.1.0",
+    "mode": "read_only",
+    "method": "synthetic_log_export",
+    "changed_target_system": false
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-07-06T04:30:00Z",
+    "sealed_at_utc": "2026-07-06T04:30:08Z"
+  },
+  "observations": {
+    "workflow": {
+      "tool_approval": {
+        "tool_id": "ai-review-tool-001",
+        "approval_record_id": "approval-001",
+        "approval_status": "approved"
+      },
+      "workflow_action": {
+        "workflow_action_id": "wf-act-001",
+        "task_scope": "synthetic access review summary",
+        "data_scope": "synthetic identity export",
+        "policy_version": "workflow-policy-v0.1.0",
+        "review_required": true,
+        "review_owner": "reviewer-001",
+        "accepted_output": "modified_before_acceptance",
+        "failure_path": "route_to_manual_review"
+      },
+      "derived_facts": {
+        "tool_approved": true,
+        "workflow_action_identified": true,
+        "task_scope_present": true,
+        "data_scope_present": true,
+        "review_owner_present": true,
+        "failure_path_defined": true,
+        "workflow_proof_ready": true
+      }
+    }
+  },
+  "integrity": {
+    "algorithm": "SHA256",
+    "canonicalization": "json-canonical-form-v0",
+    "evidence_hash": "sha256:REPLACE_WITH_COMPUTED_HASH",
+    "verification_status": "verified"
+  },
+  "control_expectation": {
+    "framework_context": "MAS TRM-inspired",
+    "control_family": "workflow_evidence",
+    "expectation": "AI-supported workflow actions should preserve evidence of task scope, data scope, review, policy version, accepted output, and failure path."
+  },
+  "policy_evaluation": {
+    "engine": "OPA",
+    "policy_package": "workflow-proof-policy-v0.1.0",
+    "input_status": "verified_evidence",
+    "result": "pass",
+    "violations": []
+  },
+  "audit_narrative_ref": "reports/workflow-proof-example.md"
+}
