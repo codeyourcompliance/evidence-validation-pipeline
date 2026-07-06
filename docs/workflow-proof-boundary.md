@@ -90,6 +90,15 @@ Workflow proof should not be produced if:
 
 The correct state is `invalid_evidence`, not `pass` or `fail`.
 
+## Related Examples
+
+- [`examples/minimal_workflow_proof_object.json`](../examples/minimal_workflow_proof_object.json)
+- [`examples/invalid_workflow_proof_missing_review_owner.json`](../examples/invalid_workflow_proof_missing_review_owner.json)
+
+The first example shows a minimum workflow-proof evidence object.
+
+The second example shows why missing review ownership should produce `invalid_evidence`, not a clean pass or fail result.
+
 ## Boundary Statement
 
 A tool may be approved.
