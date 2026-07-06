@@ -29,7 +29,7 @@ If you reference, fork, adapt, or discuss this project, please preserve attribut
 
 MAS TRM-inspired means engineering interpretation. It does not mean MAS approval, certified compliance, legal advice, regulatory advice, audit sufficiency, or prescribed implementation.
 
-This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, evidence replay, evidence requirements, artifact classification, or any specific implementation pattern.
+This project does not claim that MAS TRM prescribes Ansible, SHA256, Python, OPA, Rego, JSON schemas, evidence replay, evidence requirements, artifact classification, workflow proof, or any specific implementation pattern.
 
 The purpose is narrower: to explore how technical compliance evidence can be collected, timestamped, sealed, verified, evaluated, replayed, classified, and mapped to audit narratives.
 
@@ -73,6 +73,8 @@ The minimal pipeline is:
 10. Classify screenshots and other artifacts by evidentiary role before using them in reporting or policy evaluation.
 
 The first demo scenario uses Apache HTTPD with TLS enabled. The target system is intentionally configured with a TLS certificate approaching expiry, such as within 48 hours, so the pipeline can produce a clear technical finding.
+
+Later examples extend the same evidence-object pattern to workflow proof boundaries using synthetic AI-supported workflow records.
 
 ## Related Articles
 
@@ -178,8 +180,8 @@ These articles apply the same claim-to-evidence discipline to AI vendor review a
 - **Week 6 increment:** adds screenshot evidence classification. It separates primary evidence, supporting artifact, manual claim, not machine-verifiable artifact, and invalid evidence.
 - **Week 7 increment:** separates evidence processing from accountable audit judgment.
 - **Week 8 increment:** separates delivery evidence from workflow evidence.
-- **Week 9 increment:** separates tool approval from workflow proof.
-- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, artifact classification, OPA/Rego policy examples, and workflow-level evidence examples.
+- **Week 9 increment:** separates tool approval from workflow proof and adds minimal workflow-proof evidence examples.
+- **Future releases:** will extend schema validation, integrity verification, replay examples, checklist-to-evidence mapping, artifact classification, OPA/Rego policy examples, and workflow-level policy evaluation examples.
 
 For current implementation boundaries, see [`docs/current-implementation-status.md`](docs/current-implementation-status.md).
 
@@ -450,6 +452,11 @@ Workflow-level evidence needs task scope, data scope, accepted output, review st
 
 See [`docs/workflow-proof-boundary.md`](docs/workflow-proof-boundary.md).
 
+Related examples:
+
+- [`examples/minimal_workflow_proof_object.json`](examples/minimal_workflow_proof_object.json)
+- [`examples/invalid_workflow_proof_missing_review_owner.json`](examples/invalid_workflow_proof_missing_review_owner.json)
+
 ## Components
 
 ### Read-only collection
@@ -489,6 +496,10 @@ See [`examples/sample_evidence.json`](examples/sample_evidence.json).
 For the Week 2 system baseline example, see [`examples/sample_system_baseline.json`](examples/sample_system_baseline.json).
 
 For the Week 3 minimum evidence object, see [`examples/minimal_evidence_object.json`](examples/minimal_evidence_object.json).
+
+For the Week 9 workflow-proof evidence object, see [`examples/minimal_workflow_proof_object.json`](examples/minimal_workflow_proof_object.json).
+
+For an invalid workflow-proof example, see [`examples/invalid_workflow_proof_missing_review_owner.json`](examples/invalid_workflow_proof_missing_review_owner.json).
 
 ### Evidence requirements
 
@@ -595,6 +606,7 @@ This demo shows that a technical compliance finding can be built from a verifiab
 - accountable conclusion boundary
 - workflow evidence boundary
 - workflow proof boundary
+- minimal workflow-proof evidence examples
 
 It demonstrates a pattern:
 
@@ -648,7 +660,9 @@ evidence-validation-pipeline/
 │   └── workflow-proof-boundary.md
 └── examples/
     ├── invalid_evidence_result.json
+    ├── invalid_workflow_proof_missing_review_owner.json
     ├── minimal_evidence_object.json
+    ├── minimal_workflow_proof_object.json
     ├── sample_evidence.json
     ├── sample_report.md
     └── sample_system_baseline.json
@@ -694,6 +708,7 @@ evidence-validation-pipeline/
 - accountable audit conclusion
 - workflow evidence
 - workflow proof
+- workflow-proof evidence object
 - tool approval
 - AI-supported workflow action
 - implementation status
