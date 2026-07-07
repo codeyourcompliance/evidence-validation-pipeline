@@ -17,6 +17,8 @@ The repository currently includes:
 | TLS lifecycle evidence example | `examples/sample_evidence.json` |
 | Minimum replay-aware evidence object | `examples/minimal_evidence_object.json` |
 | Invalid evidence result | `examples/invalid_evidence_result.json` |
+| Stale evidence example | `examples/stale_evidence.json` |
+| Evidence freshness policy demo | `policies/demo/evidence_freshness.rego` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -35,6 +37,8 @@ The repository models these boundaries:
 - evidence processing vs audit conclusion
 - delivery evidence vs workflow evidence
 - tool approval vs workflow proof
+- evidence integrity vs evidence freshness
+- stale evidence vs failed control
 - invalid evidence vs failed control
 
 These boundaries are part of the public technical model.
@@ -50,7 +54,7 @@ The repository does not yet implement:
 - signed manifests
 - trusted timestamping
 - immutable evidence storage
-- OPA/Rego policy files
+- full OPA/Rego policy pack
 - replay runner
 - workflow-level policy evaluation
 - end-to-end evidence package generation
@@ -59,11 +63,17 @@ The workflow-proof examples are synthetic evidence objects.
 
 They are not a full workflow-proof engine.
 
+The freshness policy is a narrow demo policy.
+
+It is not a complete evidence integrity policy pack.
+
 ## Design Rule
 
 Do not evaluate a control claim from weak evidence.
 
 If evidence integrity fails, policy evaluation should not run.
+
+If evidence freshness has expired, downstream policy evaluation should be blocked or explicitly marked as stale evidence.
 
 If the evidence source is unclear, classify the artifact before using it.
 
