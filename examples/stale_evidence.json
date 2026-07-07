@@ -1,0 +1,81 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_id": "evd-tls-stale-001",
+  "evidence_type": "tls_certificate_state",
+  "observed_object": {
+    "type": "service_endpoint",
+    "name": "synthetic-apache-https",
+    "environment": "lab",
+    "host_id": "rocky9-apache01"
+  },
+  "source": {
+    "environment": "lab",
+    "source_system": "synthetic-apache-httpd",
+    "collection_scope": [
+      "tls_certificate_metadata",
+      "httpd_ssl_configuration"
+    ]
+  },
+  "collector": {
+    "name": "ansible.tls_certificate_collector",
+    "version": "0.1.0",
+    "mode": "read_only",
+    "method": "openssl_x509_read",
+    "changed_target_system": false
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-07-01T08:00:00Z",
+    "sealed_at_utc": "2026-07-01T08:00:08Z",
+    "evaluated_at_utc": "2026-07-07T08:00:00Z"
+  },
+  "evidence_freshness": {
+    "collected_at": "2026-07-01T08:00:00Z",
+    "valid_until": "2026-07-02T08:00:00Z",
+    "freshness_window_seconds": 86400,
+    "freshness_status": "stale",
+    "freshness_reason": "Evidence was evaluated after its declared freshness window expired."
+  },
+  "observations": {
+    "tls": {
+      "certificate": {
+        "subject": "CN=synthetic-apache-https.local",
+        "issuer": "CN=synthetic-lab-ca",
+        "not_before": "2026-06-20T00:00:00Z",
+        "not_after": "2026-07-20T00:00:00Z",
+        "signature_algorithm": "sha256WithRSAEncryption",
+        "public_key_bits": 2048
+      },
+      "derived_facts": {
+        "cert_days_to_expiry_at_collection": 19,
+        "cert_expiring_within_30_days_at_collection": true
+      }
+    }
+  },
+  "integrity": {
+    "algorithm": "SHA256",
+    "canonicalization": "json-canonical-form-v0",
+    "evidence_hash": "sha256:REPLACE_WITH_COMPUTED_HASH",
+    "verification_status": "verified"
+  },
+  "control_expectation": {
+    "framework_context": "MAS TRM-inspired",
+    "control_family": "cryptographic_controls",
+    "expectation": "Cryptographic evidence should be fresh enough to support the compliance conclusion being drawn."
+  },
+  "policy_evaluation": {
+    "engine": "OPA",
+    "policy_package": "evidence-freshness-policy-v0.1.0",
+    "input_status": "verified_but_stale_evidence",
+    "result": "stale_evidence",
+    "violations": [
+      {
+        "code": "EVIDENCE_FRESHNESS_WINDOW_EXPIRED",
+        "message": "Evidence integrity verification passed, but the evidence is stale and should not support a current compliance conclusion."
+      }
+    ]
+  },
+  "audit_boundary": {
+    "rule": "Verified evidence may still be too stale to support the current conclusion.",
+    "statement": "Integrity proves the evidence object did not change after collection. Freshness determines whether it still supports the conclusion now being made."
+  }
+}
