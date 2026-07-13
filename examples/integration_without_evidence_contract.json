@@ -1,0 +1,66 @@
+{
+  "schema_version": "0.1.0",
+  "example_id": "integration-without-evidence-contract-001",
+  "example_type": "synthetic_integration_failure",
+  "synthetic": true,
+  "integration": {
+    "integration_id": "int-synthetic-config-sync-001",
+    "source_system": "synthetic-cloud-config-api",
+    "destination_system": "synthetic-compliance-dashboard",
+    "transport_status": "success",
+    "http_status": 200,
+    "records_received": 94,
+    "received_at_utc": "2026-07-13T04:00:00Z"
+  },
+  "transported_payload": {
+    "environment": "synthetic-production",
+    "records_received": 94,
+    "control_summary": {
+      "control_id": "SYN-CONFIG-001",
+      "status": "passed",
+      "message": "All received configuration records passed."
+    }
+  },
+  "evidence_contract_status": "absent",
+  "missing_evidence_semantics": [
+    "authoritative_source_reference",
+    "expected_collection_scope",
+    "failed_target_records",
+    "collector_identity",
+    "collector_version",
+    "collection_method",
+    "observation_timestamp",
+    "evidence_type",
+    "evidence_layer",
+    "integrity_hash",
+    "normalization_trace",
+    "validation_status",
+    "policy_input_reference"
+  ],
+  "pipeline_status": {
+    "transport_status": "success",
+    "collection_status": "unknown",
+    "schema_status": "unknown",
+    "integrity_status": "not_verified",
+    "freshness_status": "unknown",
+    "policy_status": "unsupported",
+    "control_status": "unknown"
+  },
+  "evidence_assessment": {
+    "status": "not_machine_verifiable",
+    "reason": "The integration transported records but did not preserve enough provenance, scope, integrity, transformation, or policy-linkage information to support a replayable control conclusion.",
+    "prohibited_inference": "The 94 received records must not be treated as proof that the full target environment passed the control."
+  },
+  "audit_boundary": {
+    "rule": "Successful transport does not establish evidence validity.",
+    "failure_mode": "A clean integration status launders incomplete collection into an apparent control pass.",
+    "required_outcome": "Do not evaluate or report the environment as compliant until collection scope and evidence validity are established."
+  },
+  "origin": {
+    "project": "CodeYourCompliance",
+    "website": "https://www.codeyourcompliance.com/",
+    "repository": "https://github.com/codeyourcompliance/evidence-validation-pipeline",
+    "attribution_requested": true
+  },
+  "boundary": "MAS TRM-inspired engineering interpretation. This synthetic example is not legal, regulatory, audit, certification, compliance, procurement, or implementation advice."
+}
