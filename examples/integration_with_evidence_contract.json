@@ -1,0 +1,128 @@
+{
+  "schema_version": "0.1.0",
+  "example_id": "integration-with-evidence-contract-001",
+  "example_type": "synthetic_evidence_contract",
+  "synthetic": true,
+  "integration": {
+    "integration_id": "int-synthetic-config-sync-001",
+    "source_system": "synthetic-cloud-config-api",
+    "destination_system": "synthetic-compliance-dashboard",
+    "transport_status": "success",
+    "http_status": 200,
+    "records_received": 94,
+    "received_at_utc": "2026-07-13T04:00:00Z"
+  },
+  "evidence_contract": {
+    "source_system": {
+      "system_id": "src-synthetic-cloud-config-001",
+      "system_name": "synthetic-cloud-config-api",
+      "authoritative_for": [
+        "service_configuration_state"
+      ],
+      "environment": "synthetic-production"
+    },
+    "collector": {
+      "name": "codeyourcompliance.synthetic-config-collector",
+      "version": "0.1.0"
+    },
+    "collection_method": {
+      "mode": "read_only",
+      "method": "authenticated_api_query",
+      "changed_target_system": false
+    },
+    "timestamp_utc": "2026-07-13T03:59:30Z",
+    "evidence_type": "service_configuration_state",
+    "evidence_layer": "raw_evidence",
+    "integrity_hash": {
+      "algorithm": "SHA256",
+      "canonicalization": "json-canonical-form-v0",
+      "value": "sha256:REPLACE_WITH_COMPUTED_HASH",
+      "verification_status": "verified"
+    },
+    "validation_status": "incomplete_scope",
+    "policy_input_ref": null,
+    "policy_input_status": "blocked_pending_scope_resolution"
+  },
+  "collection_scope": {
+    "scope_id": "scope-synthetic-services-001",
+    "expected_targets": 100,
+    "observed_targets": 94,
+    "failed_collection_count": 6,
+    "failed_targets": [
+      {
+        "target_id": "synthetic-service-095",
+        "failure_type": "target_unreachable"
+      },
+      {
+        "target_id": "synthetic-service-096",
+        "failure_type": "authentication_failed"
+      },
+      {
+        "target_id": "synthetic-service-097",
+        "failure_type": "api_timeout"
+      },
+      {
+        "target_id": "synthetic-service-098",
+        "failure_type": "target_unreachable"
+      },
+      {
+        "target_id": "synthetic-service-099",
+        "failure_type": "rate_limited"
+      },
+      {
+        "target_id": "synthetic-service-100",
+        "failure_type": "api_timeout"
+      }
+    ]
+  },
+  "normalization_trace": {
+    "normalization_status": "completed",
+    "normalizer": "codeyourcompliance.synthetic-config-normalizer",
+    "normalizer_version": "0.1.0",
+    "input_layer": "raw_evidence",
+    "output_layer": "normalized_fact",
+    "transformations": [
+      {
+        "source_field": "service.tls.enabled",
+        "destination_field": "tls_enabled",
+        "transformation_rule": "boolean_identity_mapping",
+        "transformation_version": "0.1.0"
+      }
+    ],
+    "dropped_fields": []
+  },
+  "pipeline_status": {
+    "transport_status": "success",
+    "collection_status": "partial",
+    "schema_status": "valid",
+    "integrity_status": "verified",
+    "freshness_status": "fresh",
+    "policy_status": "not_evaluated",
+    "control_status": "unknown"
+  },
+  "policy_gate": {
+    "engine": "OPA",
+    "policy_package": "synthetic-service-config-policy-v0.1.0",
+    "evaluation_allowed": false,
+    "reason": "The declared collection scope is incomplete. Missing target evidence must remain visible before a control conclusion is produced.",
+    "required_next_state": "review_or_recollect"
+  },
+  "evidence_assessment": {
+    "status": "incomplete_scope",
+    "reason": "The evidence contract preserved source, collector, collection method, observation time, evidence layer, integrity state, scope, transformation trace, and policy linkage state.",
+    "permitted_conclusion": "Transport succeeded and 94 targets were observed.",
+    "prohibited_conclusion": "The full target environment passed the control."
+  },
+  "audit_boundary": {
+    "rule": "An evidence contract preserves the meaning and limits of transported data.",
+    "statement": "The integration succeeded, but the control remains unevaluated because six expected targets were not observed.",
+    "failure_state_preserved": true
+  },
+  "origin": {
+    "project": "CodeYourCompliance",
+    "website": "https://www.codeyourcompliance.com/",
+    "repository": "https://github.com/codeyourcompliance/evidence-validation-pipeline",
+    "attribution_requested": true
+  },
+  "boundary": "MAS TRM-inspired engineering interpretation. This synthetic example is not legal, regulatory, audit, certification, compliance, procurement, or implementation advice."
+}
