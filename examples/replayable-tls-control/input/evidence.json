@@ -1,0 +1,35 @@
+{
+  "collection_scope": {
+    "declared_targets": [
+      "api.example.test:443"
+    ],
+    "failed_targets": [],
+    "observed_targets": [
+      "api.example.test:443"
+    ]
+  },
+  "collector": {
+    "mode": "read_only",
+    "name": "synthetic_tls_collector",
+    "version": "0.1.0"
+  },
+  "evidence_id": "ev-tls-example-001",
+  "evidence_type": "tls_certificate_observation",
+  "observations": {
+    "certificate_not_after_utc": "2026-09-30T08:00:00Z",
+    "public_key_algorithm": "RSA",
+    "public_key_bits": 2048
+  },
+  "observed_object": {
+    "id": "api.example.test:443",
+    "type": "synthetic_endpoint"
+  },
+  "schema_version": "0.1.0",
+  "source": {
+    "authority": "synthetic_fixture",
+    "uri": "synthetic://api.example.test:443"
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-07-28T08:00:00Z"
+  }
+}

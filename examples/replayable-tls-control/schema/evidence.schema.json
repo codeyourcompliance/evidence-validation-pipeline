@@ -1,0 +1,146 @@
+{
+  "$id": "https://www.codeyourcompliance.com/schemas/replayable-tls-evidence-0.1.0.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "collection_scope": {
+      "additionalProperties": false,
+      "properties": {
+        "declared_targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "failed_targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "observed_targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "declared_targets",
+        "observed_targets",
+        "failed_targets"
+      ],
+      "type": "object"
+    },
+    "collector": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "const": "read_only"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "mode"
+      ],
+      "type": "object"
+    },
+    "evidence_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "evidence_type": {
+      "const": "tls_certificate_observation"
+    },
+    "observations": {
+      "additionalProperties": false,
+      "properties": {
+        "certificate_not_after_utc": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "public_key_algorithm": {
+          "type": "string"
+        },
+        "public_key_bits": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "certificate_not_after_utc",
+        "public_key_algorithm",
+        "public_key_bits"
+      ],
+      "type": "object"
+    },
+    "observed_object": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "authority": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "authority",
+        "uri"
+      ],
+      "type": "object"
+    },
+    "timestamps": {
+      "additionalProperties": false,
+      "properties": {
+        "collected_at_utc": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "collected_at_utc"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "evidence_type",
+    "observed_object",
+    "source",
+    "collector",
+    "timestamps",
+    "observations",
+    "collection_scope"
+  ],
+  "title": "Replayable TLS evidence object",
+  "type": "object"
+}
