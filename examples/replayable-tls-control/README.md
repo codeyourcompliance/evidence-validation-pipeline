@@ -58,8 +58,8 @@ python .eplay.py `
   --context .\input\evaluation-context.json `
   --evidence-schema .\schema\evidence.schema.json `
   --context-schema .\schema\context.schema.json `
-  --policy .\policy	ls_certificate.rego `
-  --output .\outssessment.json `
+  --policy .\policy\tls_certificate.rego `
+  --output .\out\assessment.json `
   --policy-engine builtin
 ```
 
@@ -72,8 +72,8 @@ python .eplay.py `
   --context .\input\evaluation-context.json `
   --evidence-schema .\schema\evidence.schema.json `
   --context-schema .\schema\context.schema.json `
-  --policy .\policy	ls_certificate.rego `
-  --output .\outssessment-opa.json `
+  --policy .\policy\tls_certificate.rego `
+  --output .\out\assessment-opa.json `
   --policy-engine opa
 ```
 
@@ -90,3 +90,4 @@ The tests assert schema execution, invalid-context separation, integrity blockin
 Each assessment records SHA256 values for evidence, schemas, evaluation context, and policy. It also records implementation and runtime versions.
 
 A report is not the evidence. The assessment must identify the artifacts and decision path that produced it.
+
