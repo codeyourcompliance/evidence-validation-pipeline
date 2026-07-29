@@ -1,0 +1,12 @@
+{
+  "context_status": "valid",
+  "control_status": "fail",
+  "decision_engine": "builtin",
+  "decision_executed": true,
+  "evidence_status": "valid",
+  "policy_artifact": {"engine": "builtin", "executed": false},
+  "violations": [{
+    "code": "TLS_CERTIFICATE_EXPIRY_THRESHOLD",
+    "message": "certificate has 8 days remaining; minimum is 30"
+  }]
+}

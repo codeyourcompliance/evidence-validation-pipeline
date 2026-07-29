@@ -1,0 +1,9 @@
+{
+  "context_status": "valid",
+  "control_status": "pass",
+  "decision_engine": "builtin",
+  "decision_executed": true,
+  "evidence_status": "valid",
+  "policy_artifact": {"engine": "builtin", "executed": false},
+  "violations": []
+}

@@ -1,0 +1,9 @@
+{
+  "context_status": "valid",
+  "control_status": "unknown",
+  "decision_engine": "builtin",
+  "decision_executed": false,
+  "evidence_status": "invalid_evidence",
+  "policy_artifact": {"engine": "builtin", "executed": false},
+  "violations": []
+}

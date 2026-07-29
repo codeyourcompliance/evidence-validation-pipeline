@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.codeyourcompliance.com/schemas/replay-context-0.1.0.json",
+  "title": "Replay evaluation context",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "evaluated_at_utc": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "max_evidence_age_hours": {"type": "number", "minimum": 0},
+    "minimum_certificate_days_remaining": {"type": "integer", "minimum": 0}
+  },
+  "required": ["evaluated_at_utc", "max_evidence_age_hours", "minimum_certificate_days_remaining"]
+}
