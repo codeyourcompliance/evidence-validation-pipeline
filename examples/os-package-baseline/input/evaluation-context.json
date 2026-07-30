@@ -1,0 +1,10 @@
+{
+  "evaluated_at_utc": "2026-07-30T08:00:00Z",
+  "max_evidence_age_hours": 24,
+  "required_packages": [
+    {"name": "openssl", "version": "3.0.13"},
+    {"name": "python3", "version": "3.12.3"},
+    {"name": "curl", "version": "8.5.0"}
+  ],
+  "unexpected_package_mode": "ignore"
+}
