@@ -1,0 +1,46 @@
+{
+  "collection_scope": {
+    "declared_targets": [
+      "host-001.example.test"
+    ],
+    "failed_targets": [],
+    "observed_targets": [
+      "host-001.example.test"
+    ]
+  },
+  "collector": {
+    "mode": "read_only",
+    "name": "synthetic_package_collector",
+    "version": "0.1.0"
+  },
+  "evidence_id": "ev-os-packages-example-001",
+  "evidence_type": "os_package_inventory",
+  "observations": {
+    "packages": [
+      {
+        "name": "openssl",
+        "version": "3.0.13"
+      },
+      {
+        "name": "python3",
+        "version": "3.12.3"
+      },
+      {
+        "name": "curl",
+        "version": "8.5.0"
+      }
+    ]
+  },
+  "observed_object": {
+    "id": "host-001.example.test",
+    "type": "synthetic_host"
+  },
+  "schema_version": "0.1.0",
+  "source": {
+    "authority": "synthetic_fixture",
+    "uri": "synthetic://host-001.example.test/packages"
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-07-30T08:00:00Z"
+  }
+}
