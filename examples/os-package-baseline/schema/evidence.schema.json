@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.codeyourcompliance.com/schemas/os-package-inventory-evidence-0.1.0.json",
+  "title": "OS package inventory evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "evidence_id": {"type": "string", "minLength": 1},
+    "evidence_type": {"const": "os_package_inventory"},
+    "observed_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"type": {"type": "string"}, "id": {"type": "string"}},
+      "required": ["type", "id"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"authority": {"type": "string"}, "uri": {"type": "string"}},
+      "required": ["authority", "uri"]
+    },
+    "collector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "mode": {"const": "read_only"}
+      },
+      "required": ["name", "version", "mode"]
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"collected_at_utc": {"type": "string", "format": "date-time", "pattern": "Z$"}},
+      "required": ["collected_at_utc"]
+    },
+    "observations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "version": {"type": "string", "minLength": 1}
+            },
+            "required": ["name", "version"]
+          }
+        }
+      },
+      "required": ["packages"]
+    },
+    "collection_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "declared_targets": {"type": "array", "items": {"type": "string"}},
+        "observed_targets": {"type": "array", "items": {"type": "string"}},
+        "failed_targets": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["declared_targets", "observed_targets", "failed_targets"]
+    }
+  },
+  "required": ["schema_version", "evidence_id", "evidence_type", "observed_object", "source", "collector", "timestamps", "observations", "collection_scope"]
+}
