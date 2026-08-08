@@ -18,7 +18,12 @@ The repository currently includes:
 | Minimum replay-aware evidence object | `examples/minimal_evidence_object.json` |
 | Invalid evidence result | `examples/invalid_evidence_result.json` |
 | Stale evidence example | `examples/stale_evidence.json` |
-| Evidence freshness policy demo | `policies/demo/evidence_freshness.rego` |
+| Evidence freshness admissibility policy demo | `policies/demo/evidence_freshness.rego` |
+| Evidence admissibility gate contract | `docs/evidence-admissibility-gate.md` |
+| Replayable TLS control reference package | `examples/replayable-tls-control/` |
+| Evidence and evaluation-context schema gates for the TLS reference package | `examples/replayable-tls-control/schema/` |
+| Computed SHA256 artifact provenance and evidence integrity gate for TLS replay | `examples/replayable-tls-control/replay.py` |
+| Deterministic TLS replay runner with built-in and OPA decision paths | `examples/replayable-tls-control/replay.py` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -26,6 +31,8 @@ The repository currently includes:
 | Screenshot evidence classification | `docs/screenshot-evidence-gap.md` |
 | Evidence-before-reporting boundary | `docs/week-3-evidence-before-reporting.md` |
 | Workflow-proof boundary | `docs/workflow-proof-boundary.md` |
+
+The replayable TLS package is a bounded reference implementation. Its capabilities should not be read as repo-wide enforcement across every example.
 
 ## Modeled
 
@@ -38,6 +45,7 @@ The repository models these boundaries:
 - delivery evidence vs workflow evidence
 - tool approval vs workflow proof
 - evidence integrity vs evidence freshness
+- evidence admissibility evaluation vs control decision evaluation
 - stale evidence vs failed control
 - invalid evidence vs failed control
 
@@ -49,13 +57,12 @@ They are not complete product features.
 
 The repository does not yet implement:
 
-- full schema validation
-- computed evidence hashes
 - signed manifests
 - trusted timestamping
 - immutable evidence storage
-- full OPA/Rego policy pack
-- replay runner
+- repo-wide schema enforcement across all evidence examples
+- a generic replay runner across evidence types
+- a full OPA/Rego policy pack
 - workflow-level policy evaluation
 - end-to-end evidence package generation
 
@@ -63,21 +70,32 @@ The workflow-proof examples are synthetic evidence objects.
 
 They are not a full workflow-proof engine.
 
-The freshness policy is a narrow demo policy.
+The freshness policy is a narrow evidence-admissibility demo policy.
 
-It is not a complete evidence integrity policy pack.
+It is not a downstream control policy or a complete evidence integrity policy pack.
+
+The replayable TLS package implements schema, integrity, freshness, replay, and decision gates for one bounded TLS scenario. It is not a generic compliance evaluation engine.
 
 ## Design Rule
 
-Do not evaluate a control claim from weak evidence.
+Do not evaluate a control claim from inadmissible evidence.
 
-If evidence integrity fails, policy evaluation should not run.
+If evidence schema validation or integrity verification fails, the control decision should not run.
 
-If evidence freshness has expired, downstream policy evaluation should be blocked or explicitly marked as stale evidence.
+If evidence freshness has expired, classify the evidence as stale and block the downstream control decision.
+
+If evaluation context is invalid, block the control decision rather than manufacturing a control failure.
 
 If the evidence source is unclear, classify the artifact before using it.
 
 If the artifact is only a claim, treat it as a claim.
+
+The state boundary is:
+
+```text
+decision_executed = false
+=> control_status = unknown
+```
 
 ## Boundary Statement
 

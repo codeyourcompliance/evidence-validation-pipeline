@@ -62,17 +62,24 @@
     "control_family": "cryptographic_controls",
     "expectation": "Cryptographic evidence should be fresh enough to support the compliance conclusion being drawn."
   },
-  "policy_evaluation": {
+  "admissibility_evaluation": {
     "engine": "OPA",
     "policy_package": "evidence-freshness-policy-v0.1.0",
+    "evaluation_scope": "evidence_freshness",
     "input_status": "verified_but_stale_evidence",
     "result": "stale_evidence",
+    "allows_control_decision": false,
     "violations": [
       {
         "code": "EVIDENCE_FRESHNESS_WINDOW_EXPIRED",
         "message": "Evidence integrity verification passed, but the evidence is stale and should not support a current compliance conclusion."
       }
     ]
+  },
+  "control_decision": {
+    "executed": false,
+    "status": "unknown",
+    "reason": "Evidence failed the freshness admissibility gate."
   },
   "audit_boundary": {
     "rule": "Verified evidence may still be too stale to support the current conclusion.",
