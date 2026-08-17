@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_id": "evd-collector-provenance-001-v020",
+  "evidence_type": "tls_certificate_state",
+  "synthetic_scenario": {
+    "scenario_id": "collector-provenance-001",
+    "target_state_id": "tls-target-state-001",
+    "target_state_held_constant_by_scenario": true,
+    "purpose": "Isolate collector provenance from target-state change."
+  },
+  "observed_object": {
+    "type": "service",
+    "name": "apache-httpd",
+    "endpoint": "https://apache01.example.internal:443"
+  },
+  "source": {
+    "host_id": "apache01",
+    "environment": "lab",
+    "source_system": "rocky-linux-9",
+    "source_reference": "https://apache01.example.internal:443"
+  },
+  "collector": {
+    "name": "ansible-readonly-tls-collector",
+    "version": "0.2.0",
+    "mode": "read_only",
+    "method": "runtime_tls_handshake",
+    "parser_version": "tls-parser-0.2.0",
+    "changed_target_system": false
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-08-17T12:00:05Z"
+  },
+  "observations": {
+    "tls": {
+      "certificate": {
+        "not_after": "2026-10-15T00:00:00Z"
+      }
+    }
+  },
+  "comparison_context": {
+    "collector_changed_in_comparison": true,
+    "interpretation": "A different observation must not be classified as target drift without resolving the collector provenance difference."
+  }
+}
