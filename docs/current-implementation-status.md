@@ -24,6 +24,8 @@ The repository currently includes:
 | Evidence and evaluation-context schema gates for the TLS reference package | `examples/replayable-tls-control/schema/` |
 | Computed SHA256 artifact provenance and evidence integrity gate for TLS replay | `examples/replayable-tls-control/replay.py` |
 | Deterministic TLS replay runner with built-in and OPA decision paths | `examples/replayable-tls-control/replay.py` |
+| Collector provenance contract | `docs/collector-provenance-contract.md` |
+| Synthetic collector provenance comparison | `examples/collector-provenance/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -34,11 +36,15 @@ The repository currently includes:
 
 The replayable TLS package is a bounded reference implementation. Its capabilities should not be read as repo-wide enforcement across every example.
 
+The collector provenance example is synthetic. It models provenance semantics; it does not implement cryptographic collector attestation or automated collector equivalence testing.
+
 ## Modeled
 
 The repository models these boundaries:
 
 - observation vs remediation
+- read-only collection vs collection provenance
+- target-state change vs collector change
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -60,6 +66,8 @@ The repository does not yet implement:
 - signed manifests
 - trusted timestamping
 - immutable evidence storage
+- cryptographic binding of collector implementation digests to evidence objects
+- automated collector-version equivalence testing
 - repo-wide schema enforcement across all evidence examples
 - a generic replay runner across evidence types
 - a full OPA/Rego policy pack
@@ -86,6 +94,8 @@ If evidence freshness has expired, classify the evidence as stale and block the 
 
 If evaluation context is invalid, block the control decision rather than manufacturing a control failure.
 
+If collector identity, version, method, parser, or source path changes, preserve that difference before classifying an observation difference as target-state drift.
+
 If the evidence source is unclear, classify the artifact before using it.
 
 If the artifact is only a claim, treat it as a claim.
@@ -95,6 +105,14 @@ The state boundary is:
 ```text
 decision_executed = false
 => control_status = unknown
+```
+
+The provenance boundary is:
+
+```text
+observation difference
++ collector difference
+=> target drift not yet established
 ```
 
 ## Boundary Statement
