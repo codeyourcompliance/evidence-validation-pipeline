@@ -64,7 +64,7 @@ The point is narrower:
 same raw observation
 + different transformation logic
 -> different normalized fact
-!= automatic target drift
+-> target-state change is not established by this difference alone
 ```
 
 Before classifying a normalized difference as target-state drift, inspect the transformation path.
