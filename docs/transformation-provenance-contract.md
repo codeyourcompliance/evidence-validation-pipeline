@@ -235,7 +235,7 @@ It shows one boundary:
 same raw observation
 + different transformation logic
 -> different normalized fact
-!= target-state change
+-> target-state change is not established by this difference alone
 ```
 
 ## Current Implementation Boundary
