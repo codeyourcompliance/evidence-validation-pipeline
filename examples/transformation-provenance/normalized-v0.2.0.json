@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_id": "evd-transformation-provenance-001-v020",
+  "evidence_type": "normalized_configuration_fact",
+  "evidence_layer": "normalized_fact",
+  "synthetic_scenario": {
+    "scenario_id": "transformation-provenance-001",
+    "target_state_id": "config-target-state-001",
+    "target_state_held_constant_by_scenario": true
+  },
+  "transformation": {
+    "name": "configuration-state-normalizer",
+    "version": "0.2.0",
+    "type": "normalization",
+    "rule_id": "PRESERVE_NOT_CONFIGURED_AS_UNKNOWN",
+    "rule_version": "0.2.0",
+    "input_ref": "raw-observation.json#evd-transformation-provenance-001-raw",
+    "input_field": "status",
+    "input_value": "not_configured",
+    "output_field": "enabled",
+    "output_value": null,
+    "output_state": "unknown",
+    "executed_at_utc": "2026-08-25T12:00:06Z"
+  },
+  "normalized_fact": {
+    "field": "enabled",
+    "value": null,
+    "state": "unknown"
+  },
+  "comparison_context": {
+    "transformation_changed_in_comparison": true,
+    "interpretation": "The normalized fact differs from v0.1.0 because transformation logic changed while the synthetic raw observation remains constant."
+  }
+}

@@ -26,6 +26,8 @@ The repository currently includes:
 | Deterministic TLS replay runner with built-in and OPA decision paths | `examples/replayable-tls-control/replay.py` |
 | Collector provenance contract | `docs/collector-provenance-contract.md` |
 | Synthetic collector provenance comparison | `examples/collector-provenance/` |
+| Transformation provenance contract | `docs/transformation-provenance-contract.md` |
+| Synthetic transformation provenance comparison | `examples/transformation-provenance/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -38,6 +40,8 @@ The replayable TLS package is a bounded reference implementation. Its capabiliti
 
 The collector provenance example is synthetic. It models provenance semantics; it does not implement cryptographic collector attestation or automated collector equivalence testing.
 
+The transformation provenance example is synthetic. It models normalization provenance semantics; it does not implement transformation attestation, semantic correctness validation, or automated transformation equivalence testing.
+
 ## Modeled
 
 The repository models these boundaries:
@@ -45,6 +49,9 @@ The repository models these boundaries:
 - observation vs remediation
 - read-only collection vs collection provenance
 - target-state change vs collector change
+- raw observation vs normalized fact
+- target-state change vs transformation change
+- transformation provenance vs transformation correctness
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -68,6 +75,9 @@ The repository does not yet implement:
 - immutable evidence storage
 - cryptographic binding of collector implementation digests to evidence objects
 - automated collector-version equivalence testing
+- cryptographic binding of transformation or rule digests to normalized facts
+- automated transformation-version equivalence or regression testing
+- repo-wide transformation provenance schema enforcement across all evidence examples
 - repo-wide schema enforcement across all evidence examples
 - a generic replay runner across evidence types
 - a full OPA/Rego policy pack
@@ -96,6 +106,8 @@ If evaluation context is invalid, block the control decision rather than manufac
 
 If collector identity, version, method, parser, or source path changes, preserve that difference before classifying an observation difference as target-state drift.
 
+If transformation identity, version, rule, input, or output semantics change, preserve that difference before classifying a normalized-fact difference as target-state drift.
+
 If the evidence source is unclear, classify the artifact before using it.
 
 If the artifact is only a claim, treat it as a claim.
@@ -107,12 +119,20 @@ decision_executed = false
 => control_status = unknown
 ```
 
-The provenance boundary is:
+The collector provenance boundary is:
 
 ```text
 observation difference
 + collector difference
 => target drift not yet established
+```
+
+The transformation provenance boundary is:
+
+```text
+same raw observation
++ transformation difference
+=> normalized difference does not establish target drift
 ```
 
 ## Boundary Statement

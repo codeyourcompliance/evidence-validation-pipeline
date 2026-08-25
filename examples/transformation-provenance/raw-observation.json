@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_id": "evd-transformation-provenance-001-raw",
+  "evidence_type": "configuration_state",
+  "evidence_layer": "raw_evidence",
+  "synthetic_scenario": {
+    "scenario_id": "transformation-provenance-001",
+    "target_state_id": "config-target-state-001",
+    "target_state_held_constant_by_scenario": true,
+    "purpose": "Isolate transformation provenance from target-state change."
+  },
+  "observed_object": {
+    "type": "configuration",
+    "name": "synthetic-login-setting"
+  },
+  "source": {
+    "source_system": "synthetic-linux-configuration",
+    "source_reference": "/etc/example/service.conf"
+  },
+  "collector": {
+    "name": "ansible-readonly-config-collector",
+    "version": "0.1.0",
+    "mode": "read_only",
+    "method": "configuration_file_read",
+    "changed_target_system": false
+  },
+  "timestamps": {
+    "collected_at_utc": "2026-08-25T12:00:00Z"
+  },
+  "observation": {
+    "field": "status",
+    "value": "not_configured"
+  },
+  "comparison_context": {
+    "raw_observation_held_constant_by_scenario": true,
+    "interpretation": "The same raw observation is used by both normalization examples so that only transformation behavior changes."
+  }
+}
