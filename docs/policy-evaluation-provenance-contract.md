@@ -57,6 +57,7 @@ evaluation:
   policy_input_ref:
   policy_input_sha256:
   evaluation_context_ref:
+  evaluation_context_sha256:
   implementation_version:
   evaluated_at_utc:
   decision_executed:
@@ -83,13 +84,13 @@ A policy package may contain multiple rules with different meanings.
 
 ### `policy_artifact_ref` and `policy_artifact_sha256`
 
-Identify the exact policy artifact and support detection of post-evaluation mutation.
+Identify the exact policy artifact and support byte-level comparison against the recorded artifact.
 
 A policy version label is useful metadata.
 
 A digest binds the recorded evaluation to specific policy bytes more precisely.
 
-A digest does not prove that the policy semantics are correct.
+A digest does not prove that the policy semantics are correct or that the artifact was an authorized policy release.
 
 ### `policy_input_ref` and `policy_input_sha256`
 
@@ -97,9 +98,11 @@ Identify the exact input consumed by the policy and support replay against the s
 
 A result cannot be replayed from a policy artifact alone.
 
-### `evaluation_context_ref`
+### `evaluation_context_ref` and `evaluation_context_sha256`
 
-Identifies external decision context when policy semantics depend on thresholds, dates, scope, jurisdiction, exception state, or other explicit context.
+Identify external decision context when policy semantics depend on thresholds, dates, scope, jurisdiction, exception state, or other explicit context.
+
+If context is stored as a separate artifact, its byte identity should survive with the evaluation record.
 
 Policy input and evaluation context should not silently change between replays.
 
@@ -167,6 +170,24 @@ Replay also depends on the policy bytes, input bytes, evaluation context, decisi
 The existing replayable TLS reference package already records SHA256 values for evidence, schemas, evaluation context, and policy, together with implementation and runtime versions.
 
 This contract makes that policy-evaluation provenance boundary explicit rather than treating it as an incidental field in one replay package.
+
+## Policy Digest Is Not Policy Authority
+
+A SHA256 digest can identify the exact policy bytes referenced by an evaluation record.
+
+It cannot prove that those bytes were approved, signed, current, applicable to the assessed scope, or released by an authorized control owner.
+
+The distinction is:
+
+```text
+policy byte identity
+!=
+policy release authority
+```
+
+A replay package can reproduce a decision against the wrong policy artifact with perfect integrity.
+
+Signed policy bundles, release authority, approval records, and trusted policy-distribution provenance are separate problems.
 
 ## Deterministic Evaluation Is Not Policy Correctness
 
