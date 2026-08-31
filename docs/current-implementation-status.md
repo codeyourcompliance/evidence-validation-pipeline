@@ -59,6 +59,7 @@ The repository models these boundaries:
 - policy result vs policy evaluation provenance
 - target-state change vs policy change
 - deterministic policy evaluation vs policy correctness
+- policy artifact identity vs policy release authority
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
