@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1.0",
+  "evaluation_id": "policy-evaluation-provenance-001-v010",
+  "scenario_id": "policy-evaluation-provenance-001",
+  "execution": {
+    "mode": "synthetic_expected_result",
+    "policy_artifact_executed": false,
+    "decision_executed": false,
+    "runtime_capture": false
+  },
+  "policy_input": {
+    "ref": "policy-input.json#policy-input-provenance-001",
+    "sha256": "5eecf4476ef75731b7302d7740014e7a4620e1726c85dd7d5252238fec033647"
+  },
+  "policy": {
+    "id": "tls-expiry-boundary-policy",
+    "version": "0.1.0",
+    "rule_id": "allow",
+    "rule_version": "0.1.0",
+    "artifact_ref": "policy-v0.1.0.rego",
+    "artifact_sha256": "8e57f9f90ad8703ffcbf1fe5d804becf7a2893cdd98974aa129eab1eda53423a",
+    "semantic_boundary": "days_to_expiry >= minimum_certificate_days_remaining"
+  },
+  "expected_decision": {
+    "allow": true,
+    "control_status": "pass"
+  },
+  "comparison_context": {
+    "policy_semantics_changed_in_comparison": true,
+    "interpretation": "This is a modeled expected result, not an OPA runtime capture. The same synthetic policy input is used by both policy versions."
+  }
+}
