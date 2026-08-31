@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "policy_input_id": "policy-input-provenance-001",
+  "synthetic_scenario": {
+    "scenario_id": "policy-evaluation-provenance-001",
+    "target_state_id": "tls-target-state-002",
+    "target_state_held_constant_by_scenario": true,
+    "purpose": "Isolate policy-evaluation provenance from target-state, collection, and transformation change."
+  },
+  "normalized_fact": {
+    "field": "days_to_expiry",
+    "value": 30,
+    "unit": "days"
+  },
+  "evaluation_context": {
+    "minimum_certificate_days_remaining": 30
+  },
+  "comparison_context": {
+    "policy_input_held_constant_by_scenario": true,
+    "interpretation": "Both policy versions consume the same synthetic normalized fact and evaluation context."
+  }
+}
