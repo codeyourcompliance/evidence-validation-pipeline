@@ -28,6 +28,8 @@ The repository currently includes:
 | Synthetic collector provenance comparison | `examples/collector-provenance/` |
 | Transformation provenance contract | `docs/transformation-provenance-contract.md` |
 | Synthetic transformation provenance comparison | `examples/transformation-provenance/` |
+| Policy evaluation provenance contract | `docs/policy-evaluation-provenance-contract.md` |
+| Synthetic policy evaluation provenance comparison | `examples/policy-evaluation-provenance/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -42,6 +44,8 @@ The collector provenance example is synthetic. It models provenance semantics; i
 
 The transformation provenance example is synthetic. It models normalization provenance semantics; it does not implement transformation attestation, semantic correctness validation, or automated transformation equivalence testing.
 
+The policy evaluation provenance comparison is synthetic. Its expected result files are not OPA runtime captures and do not claim that the example policy artifacts were executed.
+
 ## Modeled
 
 The repository models these boundaries:
@@ -52,6 +56,10 @@ The repository models these boundaries:
 - raw observation vs normalized fact
 - target-state change vs transformation change
 - transformation provenance vs transformation correctness
+- policy result vs policy evaluation provenance
+- target-state change vs policy change
+- deterministic policy evaluation vs policy correctness
+- policy artifact identity vs policy release authority
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -78,6 +86,9 @@ The repository does not yet implement:
 - cryptographic binding of transformation or rule digests to normalized facts
 - automated transformation-version equivalence or regression testing
 - repo-wide transformation provenance schema enforcement across all evidence examples
+- signed policy bundles or trusted policy-release attestation
+- repo-wide policy-version equivalence testing
+- a generic cross-policy regression harness across evidence types
 - repo-wide schema enforcement across all evidence examples
 - a generic replay runner across evidence types
 - a full OPA/Rego policy pack
@@ -94,6 +105,8 @@ It is not a downstream control policy or a complete evidence integrity policy pa
 
 The replayable TLS package implements schema, integrity, freshness, replay, and decision gates for one bounded TLS scenario. It is not a generic compliance evaluation engine.
 
+The policy evaluation provenance comparison models expected outcomes from two simple Rego expressions. It does not execute OPA or provide runtime equivalence testing.
+
 ## Design Rule
 
 Do not evaluate a control claim from inadmissible evidence.
@@ -107,6 +120,8 @@ If evaluation context is invalid, block the control decision rather than manufac
 If collector identity, version, method, parser, or source path changes, preserve that difference before classifying an observation difference as target-state drift.
 
 If transformation identity, version, rule, input, or output semantics change, preserve that difference before classifying a normalized-fact difference as target-state drift.
+
+If policy identity, version, rule semantics, artifact bytes, input, evaluation context, engine, or surrounding implementation changes, preserve that difference before classifying a control-result difference as target-state drift.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -133,6 +148,14 @@ The transformation provenance boundary is:
 same raw observation
 + transformation difference
 => normalized difference does not establish target drift
+```
+
+The policy evaluation provenance boundary is:
+
+```text
+same policy input
++ policy semantics difference
+=> decision difference does not establish target drift
 ```
 
 ## Boundary Statement
