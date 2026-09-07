@@ -2,6 +2,13 @@
   "schema_version": "0.1.0",
   "assessment_id": "control-evidence-set-incomplete-001",
   "synthetic": true,
+  "execution": {
+    "mode": "synthetic_mapping_assessment",
+    "evidence_admissibility_gate_executed": false,
+    "evidence_sufficiency_gate_executed": false,
+    "downstream_policy_executed": false,
+    "runtime_capture": false
+  },
   "mapping_ref": "control-evidence-map.json#control-evidence-map-tls-001",
   "mapping_version": "0.1.0",
   "control_id": "synthetic-tls-runtime-posture-001",
@@ -44,5 +51,6 @@
     "status": "unknown",
     "reason": "A required evidence input is missing. The control has not been evaluated."
   },
+  "interpretation": "Admissibility and completeness fields are modeled scenario states, not outputs captured from executed gates.",
   "boundary": "The present certificate evidence is admissible, but the required evidence set is incomplete. Missing protocol evidence is not converted into control failure."
 }
