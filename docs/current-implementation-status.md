@@ -48,7 +48,7 @@ The transformation provenance example is synthetic. It models normalization prov
 
 The policy evaluation provenance comparison is synthetic. Its expected result files are not OPA runtime captures and do not claim that the example policy artifacts were executed.
 
-The control-to-evidence mapping example is synthetic. It models evidence-requirement completeness before policy evaluation; it does not execute a downstream control policy or prove that the declared mapping is the correct control design.
+The control-to-evidence mapping example is synthetic. Its admissibility, completeness, and evaluation-allowed states are modeled scenario assertions; it does not execute evidence-admissibility, evidence-sufficiency, or downstream control policy gates, and it does not prove that the declared mapping is the correct control design.
 
 ## Modeled
 
@@ -119,7 +119,7 @@ The replayable TLS package implements schema, integrity, freshness, replay, and 
 
 The policy evaluation provenance comparison models expected outcomes from two simple Rego expressions. It does not execute OPA or provide runtime equivalence testing.
 
-The control-to-evidence mapping comparison models evidence sufficiency only. It does not execute OPA, evaluate the synthetic control, or validate that the mapping is complete for a real control.
+The control-to-evidence mapping comparison models evidence sufficiency only. It does not execute evidence-admissibility or evidence-sufficiency gates, OPA, or the synthetic control, and it does not validate that the mapping is complete for a real control.
 
 ## Design Rule
 
