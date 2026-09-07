@@ -266,11 +266,11 @@ tls_certificate_state
 tls_runtime_protocol_state
 ```
 
-The complete example satisfies both requirements with admissible evidence references and allows downstream policy evaluation.
+The complete example models both requirements as satisfied with admissible evidence references and models downstream policy evaluation as allowed.
 
-The incomplete example satisfies only the certificate-state requirement.
+The incomplete example models only the certificate-state requirement as satisfied.
 
-Its state is:
+Its modeled state is:
 
 ```text
 evidence_set_status = incomplete
@@ -279,6 +279,8 @@ control_status = unknown
 ```
 
 No control failure is manufactured from the missing protocol evidence.
+
+The assessment values in these synthetic examples are scenario assertions. The repository does not execute an evidence-admissibility gate, evidence-sufficiency gate, or OPA policy to produce them.
 
 ## Relationship to Existing Artifacts
 
@@ -293,6 +295,8 @@ It does not replace object-level admissibility or downstream policy logic.
 ## Current Implementation Boundary
 
 This repository currently models control-to-evidence mapping through this contract and synthetic examples.
+
+The examples do not execute evidence-admissibility or evidence-sufficiency gates, and they are not runtime captures.
 
 It does not yet implement repo-wide evidence requirement schema enforcement.
 
