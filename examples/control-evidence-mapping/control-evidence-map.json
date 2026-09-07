@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1.0",
+  "mapping_id": "control-evidence-map-tls-001",
+  "mapping_version": "0.1.0",
+  "synthetic": true,
+  "control": {
+    "control_id": "synthetic-tls-runtime-posture-001",
+    "control_version": "0.1.0",
+    "control_claim": "The declared HTTPS endpoint must satisfy both certificate-state and runtime protocol-state requirements before downstream control evaluation is allowed."
+  },
+  "evaluation_rule": "all_required_evidence_requirements_satisfied",
+  "evidence_requirements": [
+    {
+      "requirement_id": "REQ-TLS-CERT-STATE",
+      "requirement_version": "0.1.0",
+      "required": true,
+      "evidence_type": "tls_certificate_state",
+      "evidence_layer": "normalized_fact",
+      "minimum_objects": 1,
+      "scope_ref": "synthetic-endpoint-443",
+      "admissibility_required": true
+    },
+    {
+      "requirement_id": "REQ-TLS-PROTOCOL-STATE",
+      "requirement_version": "0.1.0",
+      "required": true,
+      "evidence_type": "tls_runtime_protocol_state",
+      "evidence_layer": "normalized_fact",
+      "minimum_objects": 1,
+      "scope_ref": "synthetic-endpoint-443",
+      "admissibility_required": true
+    }
+  ],
+  "boundary": {
+    "rule": "All required evidence requirements must be satisfied with admissible evidence before downstream control evaluation is allowed.",
+    "missing_required_evidence_status": "unknown"
+  }
+}

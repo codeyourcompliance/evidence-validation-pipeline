@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.1.0",
+  "assessment_id": "control-evidence-set-complete-001",
+  "synthetic": true,
+  "execution": {
+    "mode": "synthetic_mapping_assessment",
+    "evidence_admissibility_gate_executed": false,
+    "evidence_sufficiency_gate_executed": false,
+    "downstream_policy_executed": false,
+    "runtime_capture": false
+  },
+  "mapping_ref": "control-evidence-map.json#control-evidence-map-tls-001",
+  "mapping_version": "0.1.0",
+  "control_id": "synthetic-tls-runtime-posture-001",
+  "required_evidence_assessment": [
+    {
+      "requirement_id": "REQ-TLS-CERT-STATE",
+      "required": true,
+      "status": "satisfied",
+      "minimum_objects": 1,
+      "admissible_objects": 1,
+      "evidence_refs": [
+        {
+          "evidence_id": "synthetic-evd-tls-cert-001",
+          "evidence_type": "tls_certificate_state",
+          "scope_ref": "synthetic-endpoint-443",
+          "admissibility_status": "admissible"
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-TLS-PROTOCOL-STATE",
+      "required": true,
+      "status": "satisfied",
+      "minimum_objects": 1,
+      "admissible_objects": 1,
+      "evidence_refs": [
+        {
+          "evidence_id": "synthetic-evd-tls-protocol-001",
+          "evidence_type": "tls_runtime_protocol_state",
+          "scope_ref": "synthetic-endpoint-443",
+          "admissibility_status": "admissible"
+        }
+      ]
+    }
+  ],
+  "evidence_set_assessment": {
+    "required_requirements": 2,
+    "satisfied_requirements": 2,
+    "missing_required_requirement_ids": [],
+    "status": "complete",
+    "policy_evaluation_allowed": true
+  },
+  "control_decision": {
+    "executed": false,
+    "status": "not_evaluated",
+    "reason": "This example models evidence sufficiency only. Downstream control evaluation is outside this synthetic artifact."
+  },
+  "interpretation": "Admissibility and completeness fields are modeled scenario states, not outputs captured from executed gates.",
+  "boundary": "A complete admissible evidence set allows downstream evaluation; it does not itself establish control pass or fail."
+}
