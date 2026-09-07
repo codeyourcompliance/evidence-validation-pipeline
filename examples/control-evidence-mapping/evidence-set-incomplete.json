@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.1.0",
+  "assessment_id": "control-evidence-set-incomplete-001",
+  "synthetic": true,
+  "mapping_ref": "control-evidence-map.json#control-evidence-map-tls-001",
+  "mapping_version": "0.1.0",
+  "control_id": "synthetic-tls-runtime-posture-001",
+  "required_evidence_assessment": [
+    {
+      "requirement_id": "REQ-TLS-CERT-STATE",
+      "required": true,
+      "status": "satisfied",
+      "minimum_objects": 1,
+      "admissible_objects": 1,
+      "evidence_refs": [
+        {
+          "evidence_id": "synthetic-evd-tls-cert-001",
+          "evidence_type": "tls_certificate_state",
+          "scope_ref": "synthetic-endpoint-443",
+          "admissibility_status": "admissible"
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-TLS-PROTOCOL-STATE",
+      "required": true,
+      "status": "missing",
+      "minimum_objects": 1,
+      "admissible_objects": 0,
+      "evidence_refs": []
+    }
+  ],
+  "evidence_set_assessment": {
+    "required_requirements": 2,
+    "satisfied_requirements": 1,
+    "missing_required_requirement_ids": [
+      "REQ-TLS-PROTOCOL-STATE"
+    ],
+    "status": "incomplete",
+    "policy_evaluation_allowed": false
+  },
+  "control_decision": {
+    "executed": false,
+    "status": "unknown",
+    "reason": "A required evidence input is missing. The control has not been evaluated."
+  },
+  "boundary": "The present certificate evidence is admissible, but the required evidence set is incomplete. Missing protocol evidence is not converted into control failure."
+}
