@@ -36,9 +36,27 @@ This is an evidence-sufficiency rule.
 
 It is not the downstream control policy.
 
+## Execution Boundary
+
+The two assessment JSON files model scenario states only.
+
+They are explicitly marked:
+
+```text
+execution.mode = synthetic_mapping_assessment
+evidence_admissibility_gate_executed = false
+evidence_sufficiency_gate_executed = false
+downstream_policy_executed = false
+runtime_capture = false
+```
+
+The `admissibility_status`, completeness status, and `policy_evaluation_allowed` fields are synthetic scenario assertions.
+
+They are not outputs captured from executed admissibility, sufficiency, or OPA evaluation code.
+
 ## Complete Evidence Set
 
-The complete example contains one admissible evidence reference for each required evidence type.
+The complete example contains one modeled admissible evidence reference for each required evidence type.
 
 Its state is:
 
@@ -54,7 +72,7 @@ A complete evidence set does not itself prove control pass or fail.
 
 ## Incomplete Evidence Set
 
-The incomplete example contains admissible certificate-state evidence but no runtime protocol-state evidence.
+The incomplete example contains modeled admissible certificate-state evidence but no runtime protocol-state evidence.
 
 Its state is:
 
@@ -76,7 +94,7 @@ The required proof set is incomplete.
 | --- | --- | --- |
 | Required requirements | 2 | 2 |
 | Satisfied requirements | 2 | 1 |
-| Present evidence admissible | yes | yes |
+| Present evidence modeled admissible | yes | yes |
 | Missing required evidence | none | `REQ-TLS-PROTOCOL-STATE` |
 | Evidence-set status | `complete` | `incomplete` |
 | Policy evaluation allowed | `true` | `false` |
@@ -101,6 +119,10 @@ Missing evidence is not proof of control failure.
 ## What the Example Does Not Show
 
 It does not prove that the declared two-requirement mapping is the correct control design.
+
+It does not execute an evidence-admissibility gate.
+
+It does not execute an evidence-sufficiency gate.
 
 It does not execute OPA.
 
