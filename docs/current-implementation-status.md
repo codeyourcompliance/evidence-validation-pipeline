@@ -30,6 +30,8 @@ The repository currently includes:
 | Synthetic transformation provenance comparison | `examples/transformation-provenance/` |
 | Policy evaluation provenance contract | `docs/policy-evaluation-provenance-contract.md` |
 | Synthetic policy evaluation provenance comparison | `examples/policy-evaluation-provenance/` |
+| Control-to-evidence mapping contract | `docs/control-evidence-mapping-contract.md` |
+| Synthetic evidence sufficiency comparison | `examples/control-evidence-mapping/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -46,6 +48,8 @@ The transformation provenance example is synthetic. It models normalization prov
 
 The policy evaluation provenance comparison is synthetic. Its expected result files are not OPA runtime captures and do not claim that the example policy artifacts were executed.
 
+The control-to-evidence mapping example is synthetic. It models evidence-requirement completeness before policy evaluation; it does not execute a downstream control policy or prove that the declared mapping is the correct control design.
+
 ## Modeled
 
 The repository models these boundaries:
@@ -60,6 +64,10 @@ The repository models these boundaries:
 - target-state change vs policy change
 - deterministic policy evaluation vs policy correctness
 - policy artifact identity vs policy release authority
+- evidence admissibility vs evidence sufficiency
+- admissible evidence objects vs sufficient evidence set
+- missing required evidence vs failed control
+- evidence-map completeness vs control correctness
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -89,6 +97,10 @@ The repository does not yet implement:
 - signed policy bundles or trusted policy-release attestation
 - repo-wide policy-version equivalence testing
 - a generic cross-policy regression harness across evidence types
+- repo-wide evidence-requirement schema enforcement
+- automatic evidence-set assembly across evidence types
+- control-catalog version governance
+- cryptographic binding of control-to-evidence mapping artifacts to assessment results
 - repo-wide schema enforcement across all evidence examples
 - a generic replay runner across evidence types
 - a full OPA/Rego policy pack
@@ -107,6 +119,8 @@ The replayable TLS package implements schema, integrity, freshness, replay, and 
 
 The policy evaluation provenance comparison models expected outcomes from two simple Rego expressions. It does not execute OPA or provide runtime equivalence testing.
 
+The control-to-evidence mapping comparison models evidence sufficiency only. It does not execute OPA, evaluate the synthetic control, or validate that the mapping is complete for a real control.
+
 ## Design Rule
 
 Do not evaluate a control claim from inadmissible evidence.
@@ -122,6 +136,8 @@ If collector identity, version, method, parser, or source path changes, preserve
 If transformation identity, version, rule, input, or output semantics change, preserve that difference before classifying a normalized-fact difference as target-state drift.
 
 If policy identity, version, rule semantics, artifact bytes, input, evaluation context, engine, or surrounding implementation changes, preserve that difference before classifying a control-result difference as target-state drift.
+
+If a declared required evidence requirement is missing, block downstream control evaluation rather than converting the missing proof input into control pass or failure.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -156,6 +172,16 @@ The policy evaluation provenance boundary is:
 same policy input
 + policy semantics difference
 => decision difference does not establish target drift
+```
+
+The evidence sufficiency boundary is:
+
+```text
+all present evidence admissible
++ required evidence missing
+=> evidence set incomplete
+=> control decision blocked
+=> control_status = unknown
 ```
 
 ## Boundary Statement
