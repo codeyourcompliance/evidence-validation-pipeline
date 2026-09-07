@@ -2,6 +2,13 @@
   "schema_version": "0.1.0",
   "assessment_id": "control-evidence-set-complete-001",
   "synthetic": true,
+  "execution": {
+    "mode": "synthetic_mapping_assessment",
+    "evidence_admissibility_gate_executed": false,
+    "evidence_sufficiency_gate_executed": false,
+    "downstream_policy_executed": false,
+    "runtime_capture": false
+  },
   "mapping_ref": "control-evidence-map.json#control-evidence-map-tls-001",
   "mapping_version": "0.1.0",
   "control_id": "synthetic-tls-runtime-posture-001",
@@ -49,5 +56,6 @@
     "status": "not_evaluated",
     "reason": "This example models evidence sufficiency only. Downstream control evaluation is outside this synthetic artifact."
   },
+  "interpretation": "Admissibility and completeness fields are modeled scenario states, not outputs captured from executed gates.",
   "boundary": "A complete admissible evidence set allows downstream evaluation; it does not itself establish control pass or fail."
 }
