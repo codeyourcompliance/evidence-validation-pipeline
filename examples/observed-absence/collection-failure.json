@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.1.0",
+  "scenario_id": "collection-failure-001",
+  "synthetic": true,
+  "execution": {
+    "mode": "synthetic_observation_outcome",
+    "runtime_collector_executed": false,
+    "admissibility_gate_executed": false,
+    "sufficiency_gate_executed": false,
+    "downstream_policy_executed": false,
+    "runtime_capture": false
+  },
+  "scenario_assumptions": {
+    "source_authority_assumed": true,
+    "query_semantics_defined_by_scenario": true,
+    "runtime_validated": false
+  },
+  "target": {
+    "scope_ref": "synthetic-endpoint-443",
+    "source_ref": "synthetic-tls-config-api"
+  },
+  "query": {
+    "query_semantics_ref": "synthetic-legacy-tls-query-v0.1.0",
+    "collection_method": "read_only_api_query",
+    "intended_condition": "legacy_tls_protocol_configuration_present"
+  },
+  "observation_outcome": {
+    "collection_attempted": true,
+    "collection_status": "failed",
+    "scope_reached": false,
+    "response_status": "timeout",
+    "result_completeness": "not_observed",
+    "matching_objects": null,
+    "observed_state": "unobserved",
+    "absence_assertion_supported": false,
+    "failure_reason": "api_timeout_before_source_state_observed",
+    "attempted_at_utc": "2026-09-14T02:00:00Z",
+    "observed_at_utc": null
+  },
+  "control_decision": {
+    "executed": false,
+    "status": "unknown",
+    "reason": "The intended source state was not observed. No absence assertion is available for downstream control evaluation."
+  },
+  "interpretation": "The synthetic collection attempt fails before target state is observed. No returned object therefore remains unobserved rather than being normalized to object_absent.",
+  "boundary": "Collection failure is not negative evidence."
+}
