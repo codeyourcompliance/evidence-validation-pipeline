@@ -15,6 +15,20 @@ Both scenarios target the same synthetic endpoint and use the same declared quer
 - `observed-absence.json`
 - `collection-failure.json`
 
+## Scenario Assumptions
+
+The observed-absence scenario assumes, by construction, that:
+
+- the intended source is authoritative for the synthetic condition
+- the intended scope was reached
+- the query semantics are defined
+- pagination is complete
+- the collection identity has sufficient visibility for the declared scope
+
+These are synthetic assumptions, not runtime validations.
+
+The example therefore does not claim that HTTP 200 plus an empty payload is generally enough to prove absence.
+
 ## Scenario A — Observed Absence
 
 The collector is modeled as reaching the intended source and scope successfully.
@@ -51,7 +65,7 @@ control_status = unknown
 
 No object was returned in either scenario.
 
-Only the first scenario supports an absence assertion.
+Only the first scenario supports an absence assertion under the stated synthetic assumptions.
 
 ## Execution Boundary
 
