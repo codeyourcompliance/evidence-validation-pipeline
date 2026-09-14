@@ -32,6 +32,8 @@ The repository currently includes:
 | Synthetic policy evaluation provenance comparison | `examples/policy-evaluation-provenance/` |
 | Control-to-evidence mapping contract | `docs/control-evidence-mapping-contract.md` |
 | Synthetic evidence sufficiency comparison | `examples/control-evidence-mapping/` |
+| Observed absence evidence contract | `docs/observed-absence-contract.md` |
+| Synthetic observed-absence vs collection-failure comparison | `examples/observed-absence/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -49,6 +51,8 @@ The transformation provenance example is synthetic. It models normalization prov
 The policy evaluation provenance comparison is synthetic. Its expected result files are not OPA runtime captures and do not claim that the example policy artifacts were executed.
 
 The control-to-evidence mapping example is synthetic. Its admissibility, completeness, and evaluation-allowed states are modeled scenario assertions; it does not execute evidence-admissibility, evidence-sufficiency, or downstream control policy gates, and it does not prove that the declared mapping is the correct control design.
+
+The observed-absence comparison is synthetic. It models collection-outcome semantics only; it does not execute a collector, validate source authority or query semantics, or prove that an observed absence satisfies a real control requirement.
 
 ## Modeled
 
@@ -68,6 +72,9 @@ The repository models these boundaries:
 - admissible evidence objects vs sufficient evidence set
 - missing required evidence vs failed control
 - evidence-map completeness vs control correctness
+- observed absence vs failed observation
+- transport success vs observation completeness
+- observed absence vs control pass
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -101,6 +108,10 @@ The repository does not yet implement:
 - automatic evidence-set assembly across evidence types
 - control-catalog version governance
 - cryptographic binding of control-to-evidence mapping artifacts to assessment results
+- generic query-semantics validation across collectors
+- automated validation of pagination, permission completeness, or source authority for absence assertions
+- automatic determination of whether observed absence satisfies a control evidence requirement
+- cryptographic binding of observation-outcome semantics to evidence packages
 - repo-wide schema enforcement across all evidence examples
 - a generic replay runner across evidence types
 - a full OPA/Rego policy pack
@@ -121,6 +132,8 @@ The policy evaluation provenance comparison models expected outcomes from two si
 
 The control-to-evidence mapping comparison models evidence sufficiency only. It does not execute evidence-admissibility or evidence-sufficiency gates, OPA, or the synthetic control, and it does not validate that the mapping is complete for a real control.
 
+The observed-absence comparison models two collection outcomes only. It does not execute the synthetic query, verify query semantics, or evaluate a downstream control.
+
 ## Design Rule
 
 Do not evaluate a control claim from inadmissible evidence.
@@ -138,6 +151,8 @@ If transformation identity, version, rule, input, or output semantics change, pr
 If policy identity, version, rule semantics, artifact bytes, input, evaluation context, engine, or surrounding implementation changes, preserve that difference before classifying a control-result difference as target-state drift.
 
 If a declared required evidence requirement is missing, block downstream control evaluation rather than converting the missing proof input into control pass or failure.
+
+If collection fails before the intended source state is observed, preserve `unobserved` rather than converting the absence of returned data into negative evidence.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -182,6 +197,24 @@ all present evidence admissible
 => evidence set incomplete
 => control decision blocked
 => control_status = unknown
+```
+
+The observed-absence boundary is:
+
+```text
+no matching object
++ complete observation
++ defined absence semantics
+=> observed_absent
+```
+
+while:
+
+```text
+no returned object
++ failed observation
+=> unobserved
+=> absence assertion not supported
 ```
 
 ## Boundary Statement
