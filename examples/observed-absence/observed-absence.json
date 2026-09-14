@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1.0",
+  "scenario_id": "observed-absence-001",
+  "synthetic": true,
+  "execution": {
+    "mode": "synthetic_observation_outcome",
+    "collector_executed": false,
+    "admissibility_gate_executed": false,
+    "sufficiency_gate_executed": false,
+    "downstream_policy_executed": false,
+    "runtime_capture": false
+  },
+  "target": {
+    "scope_ref": "synthetic-endpoint-443",
+    "source_ref": "synthetic-tls-config-api"
+  },
+  "query": {
+    "query_semantics_ref": "synthetic-legacy-tls-query-v0.1.0",
+    "collection_method": "read_only_api_query",
+    "intended_condition": "legacy_tls_protocol_configuration_present"
+  },
+  "observation_outcome": {
+    "collection_attempted": true,
+    "collection_status": "success",
+    "scope_reached": true,
+    "response_status": "HTTP_200",
+    "result_completeness": "complete",
+    "matching_objects": 0,
+    "observed_state": "observed_absent",
+    "absence_assertion_supported": true,
+    "failure_reason": null,
+    "observed_at_utc": "2026-09-14T02:00:00Z"
+  },
+  "control_decision": {
+    "executed": false,
+    "status": "not_evaluated",
+    "reason": "This synthetic example models collection outcome semantics only."
+  },
+  "interpretation": "The modeled query completed against the intended scope with defined absence semantics and no matching object. This supports an observation-layer absence assertion only.",
+  "boundary": "Observed absence may be usable as negative evidence, but it does not itself establish control pass."
+}
