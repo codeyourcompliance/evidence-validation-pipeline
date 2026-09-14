@@ -4,11 +4,19 @@
   "synthetic": true,
   "execution": {
     "mode": "synthetic_observation_outcome",
-    "collector_executed": false,
+    "runtime_collector_executed": false,
     "admissibility_gate_executed": false,
     "sufficiency_gate_executed": false,
     "downstream_policy_executed": false,
     "runtime_capture": false
+  },
+  "scenario_assumptions": {
+    "source_authority_assumed": true,
+    "query_semantics_defined_by_scenario": true,
+    "intended_scope_coverage_assumed_complete": true,
+    "pagination_assumed_complete": true,
+    "permission_visibility_assumed_complete": true,
+    "runtime_validated": false
   },
   "target": {
     "scope_ref": "synthetic-endpoint-443",
@@ -36,6 +44,6 @@
     "status": "not_evaluated",
     "reason": "This synthetic example models collection outcome semantics only."
   },
-  "interpretation": "The modeled query completed against the intended scope with defined absence semantics and no matching object. This supports an observation-layer absence assertion only.",
+  "interpretation": "The scenario assumes source authority, complete scope, complete pagination, complete permission visibility, and defined absence semantics. Under those synthetic assumptions, no matching object supports an observation-layer absence assertion only.",
   "boundary": "Observed absence may be usable as negative evidence, but it does not itself establish control pass."
 }
