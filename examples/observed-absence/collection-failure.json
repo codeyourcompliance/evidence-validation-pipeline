@@ -4,11 +4,16 @@
   "synthetic": true,
   "execution": {
     "mode": "synthetic_observation_outcome",
-    "collector_executed": false,
+    "runtime_collector_executed": false,
     "admissibility_gate_executed": false,
     "sufficiency_gate_executed": false,
     "downstream_policy_executed": false,
     "runtime_capture": false
+  },
+  "scenario_assumptions": {
+    "source_authority_assumed": true,
+    "query_semantics_defined_by_scenario": true,
+    "runtime_validated": false
   },
   "target": {
     "scope_ref": "synthetic-endpoint-443",
@@ -37,6 +42,6 @@
     "status": "unknown",
     "reason": "The intended source state was not observed. No absence assertion is available for downstream control evaluation."
   },
-  "interpretation": "No object was returned because the modeled collection attempt failed. The result must remain unobserved rather than being normalized to object_absent.",
+  "interpretation": "The synthetic collection attempt fails before target state is observed. No returned object therefore remains unobserved rather than being normalized to object_absent.",
   "boundary": "Collection failure is not negative evidence."
 }
