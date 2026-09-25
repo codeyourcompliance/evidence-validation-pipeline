@@ -34,6 +34,8 @@ The repository currently includes:
 | Synthetic evidence sufficiency comparison | `examples/control-evidence-mapping/` |
 | Observed absence evidence contract | `docs/observed-absence-contract.md` |
 | Synthetic observed-absence vs collection-failure comparison | `examples/observed-absence/` |
+| Evidence time provenance contract | `docs/evidence-time-provenance-contract.md` |
+| Synthetic collector-asserted vs independent-receipt time comparison | `examples/evidence-time-provenance/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -53,6 +55,8 @@ The policy evaluation provenance comparison is synthetic. Its expected result fi
 The control-to-evidence mapping example is synthetic. Its admissibility, completeness, and evaluation-allowed states are modeled scenario assertions; it does not execute evidence-admissibility, evidence-sufficiency, or downstream control policy gates, and it does not prove that the declared mapping is the correct control design.
 
 The observed-absence comparison is synthetic. It models collection-outcome semantics only; it does not execute a collector, validate source authority or query semantics, or prove that an observed absence satisfies a real control requirement.
+
+The evidence-time provenance comparison is synthetic. It distinguishes collector-asserted time from a separately recorded receipt boundary; it does not execute trusted timestamping, validate clock correctness, or prove the exact historical collection time.
 
 ## Modeled
 
@@ -75,6 +79,10 @@ The repository models these boundaries:
 - observed absence vs failed observation
 - transport success vs observation completeness
 - observed absence vs control pass
+- timestamp value vs time provenance
+- hash integrity vs historical time assurance
+- collector-asserted time vs independent receipt time
+- independent receipt time vs trusted timestamping
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -95,6 +103,9 @@ The repository does not yet implement:
 
 - signed manifests
 - trusted timestamping
+- runtime validation of collector clock correctness or synchronization
+- cryptographic authentication of independent evidence receivers
+- RFC 3161 or equivalent timestamp token issuance and verification
 - immutable evidence storage
 - cryptographic binding of collector implementation digests to evidence objects
 - automated collector-version equivalence testing
@@ -153,6 +164,8 @@ If policy identity, version, rule semantics, artifact bytes, input, evaluation c
 If a declared required evidence requirement is missing, block downstream control evaluation rather than converting the missing proof input into control pass or failure.
 
 If collection fails before the intended source state is observed, preserve `unobserved` rather than converting the absence of returned data into negative evidence.
+
+If a timestamp is asserted only by the collector or packager, preserve that assurance level rather than presenting the value as independently trusted time.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -215,6 +228,24 @@ no returned object
 + failed observation
 => unobserved
 => absence assertion not supported
+```
+
+The evidence-time boundary is:
+
+```text
+timestamp field present
++ evidence hash verified
+=> recorded time claim preserved
+=> historical time independently proven = no
+```
+
+while an independent receipt can support:
+
+```text
+same evidence digest
++ separate receipt time
+=> evidence existed no later than receipt time
+=> exact collection time independently proven = no
 ```
 
 ## Boundary Statement

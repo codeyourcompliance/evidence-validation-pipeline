@@ -1,0 +1,46 @@
+{
+  "schema_version": "0.1.0",
+  "scenario_id": "collector-asserted-time-001",
+  "synthetic": true,
+  "execution": {
+    "runtime_collector_executed": false,
+    "runtime_hash_verification_executed": false,
+    "trusted_timestamping_executed": false,
+    "runtime_capture": false
+  },
+  "evidence_ref": {
+    "evidence_id": "evd-time-demo-001",
+    "subject_sha256": "sha256:SYNTHETIC_EVIDENCE_DIGEST"
+  },
+  "time_provenance": {
+    "collection_time": {
+      "value_utc": "2026-09-22T01:00:00Z",
+      "asserted_by": "synthetic-readonly-collector",
+      "clock_source_ref": "collector-host-system-clock",
+      "assurance": "collector_asserted"
+    },
+    "seal_time": {
+      "value_utc": "2026-09-22T01:00:08Z",
+      "asserted_by": "synthetic-evidence-packager",
+      "subject_sha256": "sha256:SYNTHETIC_EVIDENCE_DIGEST",
+      "assurance": "collector_asserted"
+    },
+    "receipt_time": {
+      "present": false,
+      "value_utc": null,
+      "recorded_by": null,
+      "subject_sha256": null,
+      "assurance": "none"
+    },
+    "trusted_timestamp": {
+      "present": false,
+      "authority_ref": null,
+      "token_ref": null,
+      "attested_at_utc": null,
+      "subject_sha256": null,
+      "verification_status": "not_implemented"
+    }
+  },
+  "interpretation": "The timestamp values are modeled assertions from the collection pipeline. The evidence digest may be integrity-checked, but no independent time boundary is present.",
+  "boundary": "A timestamp field records a time claim. It does not independently prove when the evidence existed."
+}
