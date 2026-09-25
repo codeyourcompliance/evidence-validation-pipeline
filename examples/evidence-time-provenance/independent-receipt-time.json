@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.1.0",
+  "scenario_id": "independent-receipt-time-001",
+  "synthetic": true,
+  "execution": {
+    "runtime_collector_executed": false,
+    "runtime_receiver_executed": false,
+    "runtime_hash_verification_executed": false,
+    "trusted_timestamping_executed": false,
+    "runtime_capture": false
+  },
+  "scenario_assumptions": {
+    "receiver_separate_from_collector": true,
+    "receiver_clock_acceptable_for_scenario": true,
+    "receipt_digest_matches_evidence_digest": true,
+    "runtime_validated": false
+  },
+  "evidence_ref": {
+    "evidence_id": "evd-time-demo-001",
+    "subject_sha256": "sha256:SYNTHETIC_EVIDENCE_DIGEST"
+  },
+  "time_provenance": {
+    "collection_time": {
+      "value_utc": "2026-09-22T01:00:00Z",
+      "asserted_by": "synthetic-readonly-collector",
+      "clock_source_ref": "collector-host-system-clock",
+      "assurance": "collector_asserted"
+    },
+    "seal_time": {
+      "value_utc": "2026-09-22T01:00:08Z",
+      "asserted_by": "synthetic-evidence-packager",
+      "subject_sha256": "sha256:SYNTHETIC_EVIDENCE_DIGEST",
+      "assurance": "collector_asserted"
+    },
+    "receipt_time": {
+      "present": true,
+      "value_utc": "2026-09-22T01:03:00Z",
+      "recorded_by": "synthetic-independent-evidence-receiver",
+      "subject_sha256": "sha256:SYNTHETIC_EVIDENCE_DIGEST",
+      "assurance": "independent_receipt"
+    },
+    "trusted_timestamp": {
+      "present": false,
+      "authority_ref": null,
+      "token_ref": null,
+      "attested_at_utc": null,
+      "subject_sha256": null,
+      "verification_status": "not_implemented"
+    }
+  },
+  "interpretation": "Under the stated synthetic assumptions, the independent receipt provides a separate boundary showing that the modeled evidence digest existed no later than the receipt time. It does not independently prove the exact collection time.",
+  "boundary": "Independent receipt time strengthens time provenance without being treated as trusted timestamping."
+}
