@@ -56,6 +56,8 @@ The control-to-evidence mapping example is synthetic. Its admissibility, complet
 
 The observed-absence comparison is synthetic. It models collection-outcome semantics only; it does not execute a collector, validate source authority or query semantics, or prove that an observed absence satisfies a real control requirement.
 
+The evidence-time provenance comparison is synthetic. It distinguishes collector-asserted time from a separately recorded receipt boundary; it does not execute trusted timestamping, validate clock correctness, or prove the exact historical collection time.
+
 ## Modeled
 
 The repository models these boundaries:
