@@ -1,0 +1,64 @@
+{
+  "schema_version": "0.1.0",
+  "scenario_id": "recorded-handoff-001",
+  "synthetic": true,
+  "execution": {
+    "mode": "synthetic_custody_assertion",
+    "runtime_collector_executed": false,
+    "runtime_integrity_check_executed": false,
+    "runtime_custody_transfer_executed": false,
+    "runtime_custody_event_authentication_executed": false,
+    "runtime_origin_authentication_executed": false,
+    "runtime_policy_executed": false,
+    "runtime_capture": false
+  },
+  "evidence_identity": {
+    "evidence_id": "evd-custody-synthetic-001",
+    "subject_ref": "synthetic://evidence/evd-custody-synthetic-001",
+    "subject_sha256": "sha256:SYNTHETIC_DIGEST_NOT_COMPUTED",
+    "subject_bytes_included": false,
+    "reference_digest_ref": "synthetic://evidence/evd-custody-synthetic-001/reference",
+    "reference_digest_provenance": "untrusted_self_supplied"
+  },
+  "integrity_check": {
+    "executed": false,
+    "modeled_digest_match": true,
+    "verification_status": "not_executed",
+    "historical_integrity_established": false
+  },
+  "origin_attribution": {
+    "claimed_producer_ref": "synthetic-readonly-collector-v0.1",
+    "collector_provenance_ref": "synthetic://collector-metadata/custody-demo",
+    "identity_authentication_method": null,
+    "authentication_evidence_ref": null,
+    "authentication_status": "not_established",
+    "source_authority_established": false
+  },
+  "custody": {
+    "events": [
+      {
+        "event_id": "handoff-001",
+        "event_type": "claimed_handoff",
+        "subject_sha256": "sha256:SYNTHETIC_DIGEST_NOT_COMPUTED",
+        "from_claimed_actor_ref": "synthetic-collector-boundary",
+        "to_claimed_actor_ref": "synthetic-evidence-repository-boundary",
+        "asserted_at_utc": "2026-10-07T02:10:00Z",
+        "received_at_utc": "2026-10-07T02:10:05Z",
+        "recorded_by": "synthetic-evidence-repository-boundary",
+        "receipt_ref": "synthetic://custody/handoff-001",
+        "event_authentication_method": null,
+        "event_authentication_status": "not_established",
+        "runtime_validated": false
+      }
+    ],
+    "modeled_handoff_count": 1,
+    "chain_assessment_status": "not_assessed",
+    "chain_complete": null
+  },
+  "downstream": {
+    "policy_executed": false,
+    "control_status": "not_evaluated"
+  },
+  "interpretation": "The same synthetic evidence subject has one asserted handoff. Neither the event nor origin is authenticated, and no complete custody chain was assessed.",
+  "boundary": "A recorded custody event is not an authenticated transfer or a verified complete custody chain."
+}
