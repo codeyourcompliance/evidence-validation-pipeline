@@ -246,7 +246,7 @@ This artifact originates from **CodeYourCompliance**.
 
 Attribution is requested for forks, references, adaptations, and discussions.
 
-MAS TRM-inspired means engineering interpretation. This project does not provide legal, regulatory, audit, certification, compliance, procurement, implementation, or legal advice.
+MAS TRM-inspired means engineering interpretation. This project does not provide legal, regulatory, audit, certification, procurement, implementation, or compliance advice.
 
 ## Final Boundary
 
