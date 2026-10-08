@@ -36,6 +36,8 @@ The repository currently includes:
 | Synthetic observed-absence vs collection-failure comparison | `examples/observed-absence/` |
 | Evidence time provenance contract | `docs/evidence-time-provenance-contract.md` |
 | Synthetic collector-asserted vs independent-receipt time comparison | `examples/evidence-time-provenance/` |
+| Evidence custody and authenticity contract | `docs/evidence-custody-authenticity-contract.md` |
+| Synthetic integrity-only vs recorded-handoff comparison | `examples/evidence-custody-authenticity/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -57,6 +59,8 @@ The control-to-evidence mapping example is synthetic. Its admissibility, complet
 The observed-absence comparison is synthetic. It models collection-outcome semantics only; it does not execute a collector, validate source authority or query semantics, or prove that an observed absence satisfies a real control requirement.
 
 The evidence-time provenance comparison is synthetic. It distinguishes collector-asserted time from a separately recorded receipt boundary; it does not execute trusted timestamping, validate clock correctness, or prove the exact historical collection time.
+
+The evidence-custody comparison is synthetic. Its modeled digest correspondence and asserted handoff are not runtime hash checks, authenticated transfer records, verified evidence origin, or proof of a complete custody chain.
 
 ## Modeled
 
@@ -83,6 +87,9 @@ The repository models these boundaries:
 - hash integrity vs historical time assurance
 - collector-asserted time vs independent receipt time
 - independent receipt time vs trusted timestamping
+- digest correspondence vs authenticated evidence origin
+- recorded handoff vs verified custody chain
+- collector identity metadata vs independent identity authentication
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -102,6 +109,9 @@ They are not complete product features.
 The repository does not yet implement:
 
 - signed manifests
+- independently anchored digest references across custody boundaries
+- authenticated evidence origin or handoff-receipt verification
+- custody event continuity and chain-completeness assessment
 - trusted timestamping
 - runtime validation of collector clock correctness or synchronization
 - cryptographic authentication of independent evidence receivers
@@ -166,6 +176,8 @@ If a declared required evidence requirement is missing, block downstream control
 If collection fails before the intended source state is observed, preserve `unobserved` rather than converting the absence of returned data into negative evidence.
 
 If a timestamp is asserted only by the collector or packager, preserve that assurance level rather than presenting the value as independently trusted time.
+
+If evidence bytes match a supplied digest, preserve the reference digest's provenance. Do not turn a self-supplied hash comparison or a claimed handoff event into authenticated evidence origin.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -246,6 +258,24 @@ same evidence digest
 + separate receipt time
 => evidence existed no later than receipt time
 => exact collection time independently proven = no
+```
+
+The custody and authenticity boundary is:
+
+```text
+modeled digest correspondence
++ self-supplied reference digest
+=> origin authentication not established
+```
+
+while:
+
+```text
+same modeled evidence subject
++ asserted handoff event
+=> custody claim recorded
+=> authenticated transfer not established
+=> complete custody chain not established
 ```
 
 ## Boundary Statement
