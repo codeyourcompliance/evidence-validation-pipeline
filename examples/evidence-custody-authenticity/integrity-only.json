@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1.0",
+  "scenario_id": "integrity-only-001",
+  "synthetic": true,
+  "execution": {
+    "mode": "synthetic_custody_assertion",
+    "runtime_collector_executed": false,
+    "runtime_integrity_check_executed": false,
+    "runtime_custody_transfer_executed": false,
+    "runtime_custody_event_authentication_executed": false,
+    "runtime_origin_authentication_executed": false,
+    "runtime_policy_executed": false,
+    "runtime_capture": false
+  },
+  "evidence_identity": {
+    "evidence_id": "evd-custody-synthetic-001",
+    "subject_ref": "synthetic://evidence/evd-custody-synthetic-001",
+    "subject_sha256": "sha256:SYNTHETIC_DIGEST_NOT_COMPUTED",
+    "subject_bytes_included": false,
+    "reference_digest_ref": "synthetic://evidence/evd-custody-synthetic-001/reference",
+    "reference_digest_provenance": "untrusted_self_supplied"
+  },
+  "integrity_check": {
+    "executed": false,
+    "modeled_digest_match": true,
+    "verification_status": "not_executed",
+    "historical_integrity_established": false
+  },
+  "origin_attribution": {
+    "claimed_producer_ref": "synthetic-readonly-collector-v0.1",
+    "collector_provenance_ref": "synthetic://collector-metadata/custody-demo",
+    "identity_authentication_method": null,
+    "authentication_evidence_ref": null,
+    "authentication_status": "not_established",
+    "source_authority_established": false
+  },
+  "custody": {
+    "events": [],
+    "modeled_handoff_count": 0,
+    "chain_assessment_status": "not_assessed",
+    "chain_complete": null
+  },
+  "downstream": {
+    "policy_executed": false,
+    "control_status": "not_evaluated"
+  },
+  "interpretation": "This scenario models an unexecuted digest correspondence with a self-supplied reference. Origin is not authenticated. No custody event is modeled.",
+  "boundary": "Modeled digest correspondence cannot establish authenticated origin or historical chain of custody."
+}
