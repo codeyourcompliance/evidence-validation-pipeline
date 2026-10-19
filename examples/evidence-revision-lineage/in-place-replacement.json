@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.1.0",
+  "synthetic": true,
+  "scenario_id": "in-place-replacement",
+  "description": "A modeled current normalized record replaces an earlier payload at the same logical identity. The original normalized payload is absent from this fixture; this package cannot reproduce the earlier evaluation input.",
+  "execution": {
+    "modeled_only": true,
+    "collector_executed": false,
+    "transformation_executed": false,
+    "sha256_computed": false,
+    "immutability_enforced": false,
+    "revision_event_recorded": false,
+    "policy_replay_executed": false,
+    "control_evaluation_executed": false
+  },
+  "logical_observation": {
+    "observation_ref": "synthetic://observation/obs-001",
+    "collected_at_asserted_utc": "2026-10-16T09:00:00Z",
+    "raw_field": "status",
+    "raw_value": "not_configured",
+    "collection_reexecuted": false
+  },
+  "historical_evaluation_binding": {
+    "evaluation_ref": "synthetic://evaluation/eval-001",
+    "original_input_evidence_ref": "synthetic://normalized/ev-norm-001",
+    "original_input_sha256": "sha256:SYNTHETIC_NORMALIZED_V1_NOT_COMPUTED",
+    "original_payload_available_in_this_package": false,
+    "evaluation_executed": false,
+    "original_result_recorded": false
+  },
+  "overwritten_record": {
+    "evidence_ref": "synthetic://normalized/ev-norm-001",
+    "current_subject_sha256": "sha256:SYNTHETIC_NORMALIZED_V2_NOT_COMPUTED",
+    "content_sha256_computed": false,
+    "transformation": {
+      "version": "0.2.0",
+      "raw_observation_ref": "synthetic://observation/obs-001",
+      "output_field": "enabled",
+      "output_value": null,
+      "output_state": "unknown"
+    },
+    "original_payload_retained_in_this_package": false,
+    "revision_event_ref": null
+  },
+  "lineage_assessment": {
+    "original_evidence_identifiable_by_recorded_digest": true,
+    "original_evidence_bytes_retrievable_from_this_package": false,
+    "historical_replay_possible_from_this_package": false,
+    "supersession_authorized": false,
+    "impact_assessment_status": "not_assessed",
+    "current_evidence_accepted_for_use": "not_established"
+  },
+  "boundary": "An updated payload and newly matching reference would not recover missing historical bytes or their original evaluation binding."
+}
