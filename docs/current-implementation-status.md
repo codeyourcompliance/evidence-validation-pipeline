@@ -38,6 +38,8 @@ The repository currently includes:
 | Synthetic collector-asserted vs independent-receipt time comparison | `examples/evidence-time-provenance/` |
 | Evidence custody and authenticity contract | `docs/evidence-custody-authenticity-contract.md` |
 | Synthetic integrity-only vs recorded-handoff comparison | `examples/evidence-custody-authenticity/` |
+| Evidence revision lineage contract | `docs/evidence-revision-lineage-contract.md` |
+| Synthetic in-place replacement vs linked revision comparison | `examples/evidence-revision-lineage/` |
 | Minimum workflow-proof evidence object | `examples/minimal_workflow_proof_object.json` |
 | Invalid workflow-proof evidence result | `examples/invalid_workflow_proof_missing_review_owner.json` |
 | Sample audit narrative | `examples/sample_report.md` |
@@ -61,6 +63,8 @@ The observed-absence comparison is synthetic. It models collection-outcome seman
 The evidence-time provenance comparison is synthetic. It distinguishes collector-asserted time from a separately recorded receipt boundary; it does not execute trusted timestamping, validate clock correctness, or prove the exact historical collection time.
 
 The evidence-custody comparison is synthetic. Its modeled digest correspondence and asserted handoff are not runtime hash checks, authenticated transfer records, verified evidence origin, or proof of a complete custody chain.
+
+The evidence-revision comparison is synthetic. It models overwritten history versus version-linked correction metadata; it does not execute hashing, immutable storage enforcement, revision approval, impact assessment, policy replay, or control evaluation.
 
 ## Modeled
 
@@ -90,6 +94,10 @@ The repository models these boundaries:
 - digest correspondence vs authenticated evidence origin
 - recorded handoff vs verified custody chain
 - collector identity metadata vs independent identity authentication
+- evidence correction vs rewriting historical inputs
+- revised normalization vs new source observation
+- versioned evidence lineage vs authorized supersession
+- revision impact reference vs executed policy re-evaluation
 - checklist row vs evidence requirement
 - screenshot vs proof object
 - evidence processing vs audit conclusion
@@ -112,6 +120,10 @@ The repository does not yet implement:
 - independently anchored digest references across custody boundaries
 - authenticated evidence origin or handoff-receipt verification
 - custody event continuity and chain-completeness assessment
+- append-only evidence revision ledger and retained version storage
+- authenticated and authorized evidence correction workflow
+- automatic revision impact tracing across historical evaluations
+- policy re-evaluation following evidence correction
 - trusted timestamping
 - runtime validation of collector clock correctness or synchronization
 - cryptographic authentication of independent evidence receivers
@@ -178,6 +190,8 @@ If collection fails before the intended source state is observed, preserve `unob
 If a timestamp is asserted only by the collector or packager, preserve that assurance level rather than presenting the value as independently trusted time.
 
 If evidence bytes match a supplied digest, preserve the reference digest's provenance. Do not turn a self-supplied hash comparison or a claimed handoff event into authenticated evidence origin.
+
+If an evidence representation is corrected after it has been referenced, preserve the old version identity and evaluation binding. A new hash or replacement JSON must not erase the historical policy input.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -276,6 +290,24 @@ same modeled evidence subject
 => custody claim recorded
 => authenticated transfer not established
 => complete custody chain not established
+```
+
+The evidence revision lineage boundary is:
+
+```text
+normalized evidence changed in place
++ original evaluation input bytes unavailable
+=> historical replay not established
+```
+
+while:
+
+```text
+separate evidence version identities
++ explicit claimed revision event
++ original evaluation binding preserved
+=> revision lineage modeled
+=> authorization and re-evaluation not established
 ```
 
 ## Boundary Statement
