@@ -1,0 +1,94 @@
+{
+  "schema_version": "0.1.0",
+  "synthetic": true,
+  "scenario_id": "linked-revision",
+  "description": "Two distinct normalized evidence versions derived from the same modeled raw observation, connected by a claimed revision event; no approval, authentication, or policy replay is executed.",
+  "execution": {
+    "modeled_only": true,
+    "collector_executed": false,
+    "transformation_executed": false,
+    "sha256_computed": false,
+    "immutability_enforced": false,
+    "revision_event_recorded_by_service": false,
+    "revision_actor_authenticated": false,
+    "policy_replay_executed": false,
+    "control_evaluation_executed": false
+  },
+  "logical_observation": {
+    "observation_ref": "synthetic://observation/obs-001",
+    "collected_at_asserted_utc": "2026-10-16T09:00:00Z",
+    "raw_field": "status",
+    "raw_value": "not_configured",
+    "collection_reexecuted": false
+  },
+  "evidence_versions": [
+    {
+      "evidence_id": "ev-norm-001-v1",
+      "evidence_ref": "synthetic://normalized/ev-norm-001-v1",
+      "subject_sha256": "sha256:SYNTHETIC_NORMALIZED_V1_NOT_COMPUTED",
+      "content_sha256_computed": false,
+      "raw_observation_ref": "synthetic://observation/obs-001",
+      "transformation": {
+        "version": "0.1.0",
+        "output_field": "enabled",
+        "output_value": false,
+        "output_state": "known_false"
+      },
+      "modeled_payload_present": true,
+      "historical_bytes_independently_retained": false
+    },
+    {
+      "evidence_id": "ev-norm-001-v2",
+      "evidence_ref": "synthetic://normalized/ev-norm-001-v2",
+      "subject_sha256": "sha256:SYNTHETIC_NORMALIZED_V2_NOT_COMPUTED",
+      "content_sha256_computed": false,
+      "raw_observation_ref": "synthetic://observation/obs-001",
+      "transformation": {
+        "version": "0.2.0",
+        "output_field": "enabled",
+        "output_value": null,
+        "output_state": "unknown"
+      },
+      "modeled_payload_present": true,
+      "historical_bytes_independently_retained": false
+    }
+  ],
+  "revision_event": {
+    "event_id": "synthetic-revision-event-001",
+    "event_type": "normalization_revision_proposed",
+    "original_evidence_ref": "synthetic://normalized/ev-norm-001-v1",
+    "original_evidence_sha256": "sha256:SYNTHETIC_NORMALIZED_V1_NOT_COMPUTED",
+    "successor_evidence_ref": "synthetic://normalized/ev-norm-001-v2",
+    "successor_evidence_sha256": "sha256:SYNTHETIC_NORMALIZED_V2_NOT_COMPUTED",
+    "raw_observation_ref": "synthetic://observation/obs-001",
+    "reason_code": "normalization_semantics_reconsidered",
+    "claimed_actor_ref": "synthetic-normalizer-maintainer",
+    "recorded_at_asserted_utc": "2026-10-19T10:00:00Z",
+    "event_authentication_status": "not_established",
+    "authorization_status": "not_established",
+    "review_status": "not_reviewed",
+    "affected_evaluation_refs": [
+      "synthetic://evaluation/eval-001"
+    ],
+    "impact_assessment_status": "not_assessed",
+    "reevaluation_status": "not_executed"
+  },
+  "historical_evaluation_binding": {
+    "evaluation_ref": "synthetic://evaluation/eval-001",
+    "original_input_evidence_ref": "synthetic://normalized/ev-norm-001-v1",
+    "original_input_sha256": "sha256:SYNTHETIC_NORMALIZED_V1_NOT_COMPUTED",
+    "evaluation_executed": false,
+    "original_result_recorded": false
+  },
+  "lineage_assessment": {
+    "distinct_version_identities": true,
+    "original_and_successor_records_structurally_present": true,
+    "immutable_storage_proven": false,
+    "original_evidence_bytes_independently_verified": false,
+    "revision_approval_established": false,
+    "impact_assessment_status": "not_assessed",
+    "current_evidence_accepted_for_use": "not_established",
+    "historical_policy_replay_executed": false
+  },
+  "boundary": "Linked records preserve modeled revision provenance and historical binding without proving immutability, authorization, correctness, or re-evaluation."
+}
