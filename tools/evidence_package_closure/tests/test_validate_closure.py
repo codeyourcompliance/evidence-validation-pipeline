@@ -131,6 +131,13 @@ class ClosureTests(unittest.TestCase):
         self.write_manifest()
         self.assertIn("unknown_role", self.codes())
 
+    def test_role_path_must_match_tls_profile(self):
+        entry = next(x for x in self.manifest["artifacts"] if x["role"] == "policy")
+        entry["path"] = "policy/alternate.rego"
+        (self.root / "policy/alternate.rego").write_bytes((self.root / self.paths["policy"]).read_bytes())
+        self.write_manifest()
+        self.assertIn("unexpected_role_path", self.codes())
+
     def test_bad_digest(self):
         self.manifest["artifacts"][0]["sha256"] = "sha256:FAKE"
         self.write_manifest()
