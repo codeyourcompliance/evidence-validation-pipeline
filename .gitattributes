@@ -1,0 +1,12 @@
+# Files bound by the TLS closure manifest require identical working-tree bytes.
+# GitHub stores LF; force LF on Windows even when core.autocrlf=true.
+/.gitattributes text eol=lf
+/examples/replayable-tls-control/closure-manifest.json text eol=lf
+/examples/replayable-tls-control/input/evidence.json text eol=lf
+/examples/replayable-tls-control/input/evidence.sha256 text eol=lf
+/examples/replayable-tls-control/schema/evidence.schema.json text eol=lf
+/examples/replayable-tls-control/input/evaluation-context.json text eol=lf
+/examples/replayable-tls-control/schema/context.schema.json text eol=lf
+/examples/replayable-tls-control/policy/tls_certificate.rego text eol=lf
+/examples/replayable-tls-control/replay.py text eol=lf
+/examples/replayable-tls-control/requirements.txt text eol=lf
