@@ -55,6 +55,16 @@ class ClosureTests(unittest.TestCase):
     def codes(self):
         return {x["code"] for x in self.run_validator()["issues"]}
 
+    def test_checked_in_tls_manifest_matches_checkout_bytes(self):
+        """Catch Git line-ending changes in the actual tracked TLS fixtures."""
+        repository = Path(__file__).resolve().parents[3]
+        manifest = repository / "examples/replayable-tls-control/closure-manifest.json"
+        report = validate(manifest)
+        self.assertEqual(report["closure_status"], "satisfied", report["issues"])
+        self.assertEqual({entry["role"] for entry in report["checks"]}, set(REQUIRED_ROLES))
+        self.assertFalse(report["replay_executed"])
+        self.assertFalse(report["decision_executed"])
+
     def test_complete_package(self):
         result = self.run_validator()
         self.assertEqual(result["closure_status"], "satisfied")

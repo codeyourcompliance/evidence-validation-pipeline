@@ -103,6 +103,16 @@ This is an illustrative projection of the successful result. The actual output a
 
 The validator never emits a control `PASS` or `FAIL`.
 
+## Checkout Byte Fidelity
+
+The v0.1 manifest records SHA256 of the exact LF bytes committed for the eight TLS replay inputs. This is a byte-level identity check, not a semantic JSON or text comparison.
+
+On a Windows clone using `core.autocrlf=true`, Git may have converted these files to CRLF at checkout. Such files may be considered clean by Git after line-ending normalization but still produce different raw SHA256 values. Closure must remain blocked rather than accepting both byte representations implicitly.
+
+The repository's [root `.gitattributes`](../.gitattributes) now pins `eol=lf` for the manifest and eight referenced files. Existing clones may need to rewrite those tracked worktree files after updating; see the [Windows repair instructions](../tools/evidence_package_closure/README.md#windows-line-ending-repair-after-upgrading-an-existing-clone).
+
+The test suite includes a real checked-in TLS fixture check so that checkout conversion errors do not remain hidden behind synthetic temporary-file tests.
+
 ## What the Manifest Does Not Prove
 
 A manifest containing hashes is not automatically an authenticated baseline.
