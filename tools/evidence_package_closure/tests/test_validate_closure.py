@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT))
 from validate_closure import PROFILE, REQUIRED_ROLES, validate  # noqa: E402
 
 
@@ -177,7 +177,7 @@ class ClosureTests(unittest.TestCase):
         self.assertEqual(before, after)
 
     def test_cli_exit_codes(self):
-        command = [sys.executable, str(ROOT / "tools/validate_closure.py"), "--manifest", str(self.root / "closure-manifest.json")]
+        command = [sys.executable, str(ROOT / "validate_closure.py"), "--manifest", str(self.root / "closure-manifest.json")]
         good = subprocess.run(command, capture_output=True, text=True, check=False)
         self.assertEqual(good.returncode, 0)
         self.assertEqual(json.loads(good.stdout)["closure_status"], "satisfied")
