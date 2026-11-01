@@ -24,7 +24,7 @@ REQUIRED_ROLES = (
     "replay_implementation",
     "runtime_requirements",
 )
-HEX64 = re.compile(r"[0-9a-f]{64}\\Z", re.ASCII)
+HEX64 = re.compile(r"[0-9a-f]{64}\Z", re.ASCII)
 MAX_MANIFEST_BYTES = 256 * 1024
 WINDOWS_RESERVED = {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}
 
@@ -68,7 +68,7 @@ def result_template() -> dict[str, Any]:
 
 
 def valid_relative_path(value: Any) -> bool:
-    if not isinstance(value, str) or not value or "\\\\" in value or ":" in value:
+    if not isinstance(value, str) or not value or "\\" in value or ":" in value:
         return False
     if value.startswith("/") or any(ord(char) < 32 for char in value):
         return False
