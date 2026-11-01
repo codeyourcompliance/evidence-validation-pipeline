@@ -24,6 +24,16 @@ REQUIRED_ROLES = (
     "replay_implementation",
     "runtime_requirements",
 )
+EXPECTED_PATHS = {
+    "evidence": "input/evidence.json",
+    "evidence_digest": "input/evidence.sha256",
+    "evidence_schema": "schema/evidence.schema.json",
+    "evaluation_context": "input/evaluation-context.json",
+    "context_schema": "schema/context.schema.json",
+    "policy": "policy/tls_certificate.rego",
+    "replay_implementation": "replay.py",
+    "runtime_requirements": "requirements.txt",
+}
 HEX64 = re.compile(r"[0-9a-f]{64}\Z", re.ASCII)
 MAX_MANIFEST_BYTES = 256 * 1024
 WINDOWS_RESERVED = {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}
@@ -108,6 +118,9 @@ def validate_structure(data: Any) -> list[dict[str, str]]:
             problems.append(issue("duplicate_path", role=role if isinstance(role, str) else None, path=path))
         else:
             paths.add(path.casefold())
+        if isinstance(role, str) and role in EXPECTED_PATHS and valid_relative_path(path):
+            if path != EXPECTED_PATHS[role]:
+                problems.append(issue("unexpected_role_path", role=role, path=path))
         if not isinstance(digest, str) or HEX64.fullmatch(digest) is None:
             problems.append(issue("invalid_sha256", role=role if isinstance(role, str) else None))
     for role in REQUIRED_ROLES:
