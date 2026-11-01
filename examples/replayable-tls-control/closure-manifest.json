@@ -1,0 +1,46 @@
+{
+  "manifest_version": "0.1.0",
+  "profile": "tls-replay-v0.1",
+  "artifacts": [
+    {
+      "role": "evidence",
+      "path": "input/evidence.json",
+      "sha256": "2dafe51652c412a129cd9aad5388285a21bdf8892a2435327c75d4e43fc9863c"
+    },
+    {
+      "role": "evidence_digest",
+      "path": "input/evidence.sha256",
+      "sha256": "3c307bb01805b33b6268c88e364653d843aa5cf887b1b5e4910ed35d33fb4c55"
+    },
+    {
+      "role": "evidence_schema",
+      "path": "schema/evidence.schema.json",
+      "sha256": "5ab925d18824c753efa6030d60a2328b25f713220ffc9e638216a42d004265ef"
+    },
+    {
+      "role": "evaluation_context",
+      "path": "input/evaluation-context.json",
+      "sha256": "1d16534aad2b195ae8abf8643e1855747633dbfa2c663b4521ae67349cecd89f"
+    },
+    {
+      "role": "context_schema",
+      "path": "schema/context.schema.json",
+      "sha256": "c716ac2fe110db71e9b8bd5b3a2feb231fee4f71fddfb886e7c4e79666370664"
+    },
+    {
+      "role": "policy",
+      "path": "policy/tls_certificate.rego",
+      "sha256": "6cf49a9b562b8b7bd1740071a265a511eee480aeabddb9ee8eeb6856fdb39e49"
+    },
+    {
+      "role": "replay_implementation",
+      "path": "replay.py",
+      "sha256": "887700b70681332ca8da6044a074087d4cb509ba62258b1a5c8aeca4c7f7341f"
+    },
+    {
+      "role": "runtime_requirements",
+      "path": "requirements.txt",
+      "sha256": "d709f93036d39cab1b7765c8f606044074e1fd0733ff4c984b78a7c01c78c2c7"
+    }
+  ]
+}
