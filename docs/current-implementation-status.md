@@ -24,6 +24,10 @@ The repository currently includes:
 | Evidence and evaluation-context schema gates for the TLS reference package | `examples/replayable-tls-control/schema/` |
 | Computed SHA256 artifact provenance and evidence integrity gate for TLS replay | `examples/replayable-tls-control/replay.py` |
 | Deterministic TLS replay runner with built-in and OPA decision paths | `examples/replayable-tls-control/replay.py` |
+| Bounded TLS package closure contract | `docs/evidence-package-closure-contract.md` |
+| Offline TLS package closure validator | `tools/evidence_package_closure/validate_closure.py` |
+| TLS required-role and byte-reference manifest | `examples/replayable-tls-control/closure-manifest.json` |
+| Synthetic validator unit tests | `tools/evidence_package_closure/tests/` |
 | Collector provenance contract | `docs/collector-provenance-contract.md` |
 | Synthetic collector provenance comparison | `examples/collector-provenance/` |
 | Transformation provenance contract | `docs/transformation-provenance-contract.md` |
@@ -49,6 +53,8 @@ The repository currently includes:
 | Workflow-proof boundary | `docs/workflow-proof-boundary.md` |
 
 The replayable TLS package is a bounded reference implementation. Its capabilities should not be read as repo-wide enforcement across every example.
+
+The offline TLS package closure validator is a bounded, read-only preflight for one hardcoded profile. It verifies eight pinned local role/path pairs, SHA256 against a supplied manifest, and the evidence-to-digest-file binding. It does not authenticate the manifest, install runtime dependencies, execute replay, or establish policy or control correctness. Local standard-library unit tests exercise the validator on synthetic temporary files; this is not Windows-native or repository-wide runtime validation.
 
 The collector provenance example is synthetic. It models provenance semantics; it does not implement cryptographic collector attestation or automated collector equivalence testing.
 
@@ -95,6 +101,10 @@ The repository models these boundaries:
 - recorded handoff vs verified custody chain
 - collector identity metadata vs independent identity authentication
 - evidence correction vs rewriting historical inputs
+- individual artifact integrity vs fixed-profile package closure
+- declared manifest roles vs pinned profile requirements
+- package closure satisfied vs replay executed
+- manifest SHA256 consistency vs manifest authority
 - revised normalization vs new source observation
 - versioned evidence lineage vs authorized supersession
 - revision impact reference vs executed policy re-evaluation
@@ -150,6 +160,9 @@ The repository does not yet implement:
 - a full OPA/Rego policy pack
 - workflow-level policy evaluation
 - end-to-end evidence package generation
+- generic cross-profile evidence package closure validation
+- trusted publication or independent authentication of closure manifests
+- installed runtime or external dependency availability checks
 
 The workflow-proof examples are synthetic evidence objects.
 
@@ -192,6 +205,8 @@ If a timestamp is asserted only by the collector or packager, preserve that assu
 If evidence bytes match a supplied digest, preserve the reference digest's provenance. Do not turn a self-supplied hash comparison or a claimed handoff event into authenticated evidence origin.
 
 If an evidence representation is corrected after it has been referenced, preserve the old version identity and evaluation binding. A new hash or replacement JSON must not erase the historical policy input.
+
+If an existing evidence file matches a digest but the required evaluation context, policy, schema, or replay implementation is missing, block package closure rather than presenting a successful replay. Even if closure checks pass, keep decision_executed = false until a separate replay actually runs.
 
 If the evidence source is unclear, classify the artifact before using it.
 
@@ -309,6 +324,20 @@ separate evidence version identities
 => revision lineage modeled
 => authorization and re-evaluation not established
 ```
+
+The TLS package closure preflight boundary is:
+
+```text
+all fixed-profile roles and paths present
++ local SHA256 values match supplied manifest
++ evidence digest file matches evidence bytes
+=> closure_status = satisfied
+=> replay_executed = false
+=> decision_executed = false
+=> control_status = unknown
+```
+
+Any unresolved required role, path, or digest discrepancy blocks closure. These checks do not authenticate the manifest or prove that a historical runtime can be reproduced.
 
 ## Boundary Statement
 
