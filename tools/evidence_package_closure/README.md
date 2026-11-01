@@ -27,46 +27,13 @@ Do not put the output file into a source directory that is itself part of an ind
 
 ## Windows line-ending repair after upgrading an existing clone
 
-The TLS manifest pins SHA256 values for **LF bytes** in the repository. Git on Windows may have checked out earlier copies with CRLF when `core.autocrlf=true`. These are byte differences even when Git reports a clean tracked worktree.
+The TLS closure manifest pins the **exact LF bytes** stored in Git. Windows checkout configuration can leave existing files as CRLF (`i/lf w/crlf attr/text eol=lf`) even after the root `.gitattributes` specifies LF.
 
-The root [`.gitattributes`](../../.gitattributes) now forces `eol=lf` for the eight hashed TLS files and the manifest. **Adding that rule does not necessarily rewrite files already checked out.**
+On a tested Windows clone, both `git restore --worktree` and `git checkout-index --force` returned exit code 0 but left the eight files as CRLF. Those commands are **not a verified repair on that host**. Repeatedly retrying them or rewriting the manifest SHA256 values is not appropriate.
 
-After pulling a commit that contains the new attributes, run this once from PowerShell. On an existing clean Windows clone, `git restore --worktree` may leave CRLF files untouched because Git treats their normalized content as unchanged. `git checkout-index --force` explicitly rewrites the named paths from the index, applying the LF attribute. The temporary `-c core.autocrlf=false` option affects only this command. Stop if any tracked local edits exist. Untracked Python cache directories are not touched.
+The verified repair was a guarded, eight-file operation using the exact **Git index bytes**. Each index blob matched the manifest, and each local file differed only by CRLF before being rewritten to LF. The on-host result was eight `w/lf` files, closure exit 0, and 21/21 passing tests.
 
-```powershell
-$repo = "C:\CodeYourCompliance\evidence-validation-pipeline"
-if ((git -C $repo branch --show-current).Trim() -ne "main") {
-    throw "Expected main branch"
-}
-$dirty = @(git -C $repo status --porcelain --untracked-files=no)
-if ($LASTEXITCODE -ne 0 -or $dirty.Count -ne 0) {
-    throw "Tracked changes detected; do not overwrite"
-}
-$paths = @(
-    "examples/replayable-tls-control/input/evidence.json"
-    "examples/replayable-tls-control/input/evidence.sha256"
-    "examples/replayable-tls-control/schema/evidence.schema.json"
-    "examples/replayable-tls-control/input/evaluation-context.json"
-    "examples/replayable-tls-control/schema/context.schema.json"
-    "examples/replayable-tls-control/policy/tls_certificate.rego"
-    "examples/replayable-tls-control/replay.py"
-    "examples/replayable-tls-control/requirements.txt"
-)
-git -C $repo -c core.autocrlf=false checkout-index --force -- $paths
-if ($LASTEXITCODE -ne 0) { throw "Forced checkout failed" }
-$eol = @(git -C $repo ls-files --eol -- $paths)
-if ($LASTEXITCODE -ne 0) { throw "Unable to inspect working-tree line endings" }
-$bad = @($eol | Where-Object { $_ -notmatch 'i/lf\s+w/lf\s+attr/text eol=lf' })
-if ($eol.Count -ne $paths.Count -or $bad.Count -gt 0) {
-    $eol | ForEach-Object { Write-Host $_ }
-    throw "Expected all eight TLS files to use LF; closure validation remains blocked"
-}
-$eol
-```
-
-All eight lines from `git ls-files --eol` should show `i/lf`, `w/lf`, and `attr/text eol=lf`. In a disposable Git repository using `core.autocrlf=true`, forced `checkout-index` restored LF bytes from a CRLF checkout. This is a repair for local working-tree byte representation, not a change to the index, manifest, evidence reference digest, or recorded historical evidence.
-
-Re-run the closure validator and tests. Do not fix mismatches by replacing the manifest hashes with CRLF hashes; that breaks the cross-platform byte identity boundary.
+Follow [Windows TLS fixture byte repair](WINDOWS-LF-REPAIR.md) for the verified script, safety checks, and a separate Git index stat-cache refresh step. Repairing byte identity does not necessarily clear a stale Git `M` status immediately. Do not use `git add` or `git reset --hard` just to hide that status.
 
 ## Run tests
 
