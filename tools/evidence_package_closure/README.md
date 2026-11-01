@@ -25,6 +25,42 @@ $LASTEXITCODE
 
 Do not put the output file into a source directory that is itself part of an independently managed evidence package.
 
+## Windows line-ending repair after upgrading an existing clone
+
+The TLS manifest pins SHA256 values for **LF bytes** in the repository. Git on Windows may have checked out earlier copies with CRLF when `core.autocrlf=true`. These are byte differences even when Git reports a clean tracked worktree.
+
+The root [`.gitattributes`](../../.gitattributes) now forces `eol=lf` for the eight hashed TLS files and the manifest. **Adding that rule does not necessarily rewrite files already checked out.**
+
+After pulling a commit that contains the new attributes, run this once from PowerShell. This explicitly replaces only the eight named tracked files, so first refuse to proceed if any tracked files have local edits. Untracked Python cache directories are not touched.
+
+```powershell
+$repo = "C:\CodeYourCompliance\evidence-validation-pipeline"
+if ((git -C $repo branch --show-current).Trim() -ne "main") {
+    throw "Expected main branch"
+}
+$dirty = @(git -C $repo status --porcelain --untracked-files=no)
+if ($LASTEXITCODE -ne 0 -or $dirty.Count -ne 0) {
+    throw "Tracked changes detected; do not overwrite"
+}
+$paths = @(
+    "examples/replayable-tls-control/input/evidence.json"
+    "examples/replayable-tls-control/input/evidence.sha256"
+    "examples/replayable-tls-control/schema/evidence.schema.json"
+    "examples/replayable-tls-control/input/evaluation-context.json"
+    "examples/replayable-tls-control/schema/context.schema.json"
+    "examples/replayable-tls-control/policy/tls_certificate.rego"
+    "examples/replayable-tls-control/replay.py"
+    "examples/replayable-tls-control/requirements.txt"
+)
+git -C $repo restore --worktree -- $paths
+if ($LASTEXITCODE -ne 0) { throw "Restore failed" }
+git -C $repo ls-files --eol -- $paths
+```
+
+All eight lines from `git ls-files --eol` should show `i/lf`, `w/lf`, and `attr/text eol=lf`. This behavior was also checked with a local Git simulation using `core.autocrlf=true`.
+
+Re-run the closure validator and tests. Do not fix mismatches by replacing the manifest hashes with CRLF hashes; that breaks the cross-platform byte identity boundary.
+
 ## Run tests
 
 From repository root:
