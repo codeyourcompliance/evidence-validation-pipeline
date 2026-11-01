@@ -31,7 +31,7 @@ The TLS manifest pins SHA256 values for **LF bytes** in the repository. Git on W
 
 The root [`.gitattributes`](../../.gitattributes) now forces `eol=lf` for the eight hashed TLS files and the manifest. **Adding that rule does not necessarily rewrite files already checked out.**
 
-After pulling a commit that contains the new attributes, run this once from PowerShell. This explicitly replaces only the eight named tracked files, so first refuse to proceed if any tracked files have local edits. Untracked Python cache directories are not touched.
+After pulling a commit that contains the new attributes, run this once from PowerShell. On an existing clean Windows clone, `git restore --worktree` may leave CRLF files untouched because Git treats their normalized content as unchanged. `git checkout-index --force` explicitly rewrites the named paths from the index, applying the LF attribute. The temporary `-c core.autocrlf=false` option affects only this command. Stop if any tracked local edits exist. Untracked Python cache directories are not touched.
 
 ```powershell
 $repo = "C:\CodeYourCompliance\evidence-validation-pipeline"
@@ -52,12 +52,19 @@ $paths = @(
     "examples/replayable-tls-control/replay.py"
     "examples/replayable-tls-control/requirements.txt"
 )
-git -C $repo restore --worktree -- $paths
-if ($LASTEXITCODE -ne 0) { throw "Restore failed" }
-git -C $repo ls-files --eol -- $paths
+git -C $repo -c core.autocrlf=false checkout-index --force -- $paths
+if ($LASTEXITCODE -ne 0) { throw "Forced checkout failed" }
+$eol = @(git -C $repo ls-files --eol -- $paths)
+if ($LASTEXITCODE -ne 0) { throw "Unable to inspect working-tree line endings" }
+$bad = @($eol | Where-Object { $_ -notmatch 'i/lf\s+w/lf\s+attr/text eol=lf' })
+if ($eol.Count -ne $paths.Count -or $bad.Count -gt 0) {
+    $eol | ForEach-Object { Write-Host $_ }
+    throw "Expected all eight TLS files to use LF; closure validation remains blocked"
+}
+$eol
 ```
 
-All eight lines from `git ls-files --eol` should show `i/lf`, `w/lf`, and `attr/text eol=lf`. This behavior was also checked with a local Git simulation using `core.autocrlf=true`.
+All eight lines from `git ls-files --eol` should show `i/lf`, `w/lf`, and `attr/text eol=lf`. In a disposable Git repository using `core.autocrlf=true`, forced `checkout-index` restored LF bytes from a CRLF checkout. This is a repair for local working-tree byte representation, not a change to the index, manifest, evidence reference digest, or recorded historical evidence.
 
 Re-run the closure validator and tests. Do not fix mismatches by replacing the manifest hashes with CRLF hashes; that breaks the cross-platform byte identity boundary.
 
