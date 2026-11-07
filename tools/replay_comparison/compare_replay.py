@@ -43,6 +43,21 @@ def load_json(path: Path) -> tuple[dict[str, Any], str]:
     return value, sha256(raw)
 
 
+def typed_json_equal(left: Any, right: Any) -> bool:
+    """Compare JSON values without Python's bool/number equality coercion."""
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return left.keys() == right.keys() and all(
+            typed_json_equal(left[key], right[key]) for key in left
+        )
+    if isinstance(left, list):
+        return len(left) == len(right) and all(
+            typed_json_equal(l_item, r_item) for l_item, r_item in zip(left, right)
+        )
+    return left == right
+
+
 def valid_baseline(value: dict[str, Any]) -> bool:
     if set(value) != {"record_type", "profile", "authority", "artifact_sha256", "recorded"}:
         return False
@@ -201,7 +216,7 @@ def compare(manifest_path: Path, recorded_path: Path, engine: str, opa_command: 
         out["reason_codes"].append("evaluation_provenance_mismatch")
         return out
     out["mismatched_fields"] = sorted(key for key in DECISION_FIELDS
-                                      if actual.get(key) != expected[key])
+                                      if not typed_json_equal(actual.get(key), expected[key]))
     if out["mismatched_fields"]:
         out["comparison_status"] = "decision_mismatch"
         out["reason_codes"].append("result_difference")
