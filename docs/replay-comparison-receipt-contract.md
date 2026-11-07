@@ -29,6 +29,8 @@ The v0.1 stable comparison includes `evidence_id`, `evidence_status`, `context_s
 
 Python and OPA runtime versions are not asserted equivalent. Gate trace equivalence, output timestamps, environment variables, transitive dependencies, and policy semantics are not independently verified.
 
+Stable result fields use strict recursive JSON value and type comparison. For example, `false` must not match `0` or `0.0` in `derived_facts`; a mismatched nested field produces `decision_mismatch`. JSON object key ordering alone is not a mismatch.
+
 ## Status and decision boundaries
 
 | Status | Meaning |
