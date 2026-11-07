@@ -1,0 +1,31 @@
+{
+  "record_type": "synthetic_tls_recorded_assessment_v0.1",
+  "profile": "tls-replay-v0.1",
+  "authority": "unattested_synthetic_fixture",
+  "artifact_sha256": {
+    "evidence": "2dafe51652c412a129cd9aad5388285a21bdf8892a2435327c75d4e43fc9863c",
+    "evidence_digest": "3c307bb01805b33b6268c88e364653d843aa5cf887b1b5e4910ed35d33fb4c55",
+    "evidence_schema": "5ab925d18824c753efa6030d60a2328b25f713220ffc9e638216a42d004265ef",
+    "evaluation_context": "1d16534aad2b195ae8abf8643e1855747633dbfa2c663b4521ae67349cecd89f",
+    "context_schema": "c716ac2fe110db71e9b8bd5b3a2feb231fee4f71fddfb886e7c4e79666370664",
+    "policy": "6cf49a9b562b8b7bd1740071a265a511eee480aeabddb9ee8eeb6856fdb39e49",
+    "replay_implementation": "887700b70681332ca8da6044a074087d4cb509ba62258b1a5c8aeca4c7f7341f",
+    "runtime_requirements": "d709f93036d39cab1b7765c8f606044074e1fd0733ff4c984b78a7c01c78c2c7"
+  },
+  "recorded": {
+    "evidence_id": "ev-tls-example-001",
+    "evidence_status": "valid",
+    "context_status": "valid",
+    "control_status": "pass",
+    "decision_engine": "builtin",
+    "decision_executed": true,
+    "policy_artifact_executed": false,
+    "implementation_name": "codeyourcompliance.replayable_tls_control",
+    "implementation_version": "0.1.1",
+    "violations": [],
+    "derived_facts": {
+      "evidence_age_hours": 0.0,
+      "days_to_expiry": 64
+    }
+  }
+}
