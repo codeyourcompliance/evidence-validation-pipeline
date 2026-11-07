@@ -257,6 +257,20 @@ class ReplayComparisonTests(unittest.TestCase):
         self.assertNotEqual(unsafe.returncode, 0)
         self.assertFalse((self.package / "receipt.json").exists())
 
+    def test_boolean_cannot_equal_numeric_zero_in_derived_facts(self):
+        self.baseline["recorded"]["derived_facts"]["evidence_age_hours"] = False
+        self.write_baseline()
+        out = compare(self.manifest_path, self.baseline_path, "builtin")
+        self.assertEqual(out["comparison_status"], "decision_mismatch", out)
+        self.assertIn("derived_facts", out["mismatched_fields"])
+
+    def test_numeric_type_difference_is_reported(self):
+        self.baseline["recorded"]["derived_facts"]["days_to_expiry"] = 64.0
+        self.write_baseline()
+        out = compare(self.manifest_path, self.baseline_path, "builtin")
+        self.assertEqual(out["comparison_status"], "decision_mismatch", out)
+        self.assertIn("derived_facts", out["mismatched_fields"])
+
     def test_same_inputs_different_decision_not_control_drift(self):
         self.baseline["recorded"]["violations"] = [{"code":"EXPECTED_DIFFERENT"}]
         self.write_baseline()
