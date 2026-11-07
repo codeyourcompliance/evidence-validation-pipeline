@@ -10,3 +10,7 @@
 /examples/replayable-tls-control/policy/tls_certificate.rego text eol=lf
 /examples/replayable-tls-control/replay.py text eol=lf
 /examples/replayable-tls-control/requirements.txt text eol=lf
+# Bound the synthetic recorded assessment's raw-byte identity on Windows.
+/tools/replay_comparison/fixtures/synthetic-recorded-builtin.json text eol=lf
+/tools/replay_comparison/compare_replay.py text eol=lf
+/tools/replay_comparison/tests/test_compare_replay.py text eol=lf
