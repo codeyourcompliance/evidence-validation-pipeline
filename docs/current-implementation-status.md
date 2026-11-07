@@ -28,6 +28,10 @@ The repository currently includes:
 | Offline TLS package closure validator | `tools/evidence_package_closure/validate_closure.py` |
 | TLS required-role and byte-reference manifest | `examples/replayable-tls-control/closure-manifest.json` |
 | Synthetic validator unit tests | `tools/evidence_package_closure/tests/` |
+| Bounded TLS replay comparison runner and receipt | `tools/replay_comparison/compare_replay.py` |
+| Unattested synthetic recorded TLS assessment | `tools/replay_comparison/fixtures/synthetic-recorded-builtin.json` |
+| Synthetic replay comparison tests (mock replay subprocess) | `tools/replay_comparison/tests/` |
+| Replay comparison receipt contract | `docs/replay-comparison-receipt-contract.md` |
 | Collector provenance contract | `docs/collector-provenance-contract.md` |
 | Synthetic collector provenance comparison | `examples/collector-provenance/` |
 | Transformation provenance contract | `docs/transformation-provenance-contract.md` |
@@ -55,6 +59,10 @@ The repository currently includes:
 The replayable TLS package is a bounded reference implementation. Its capabilities should not be read as repo-wide enforcement across every example.
 
 The offline TLS package closure validator is a bounded, read-only preflight for one hardcoded profile. It verifies eight pinned local role/path pairs, SHA256 against a supplied manifest, and the evidence-to-digest-file binding. It does not authenticate the manifest, install runtime dependencies, execute replay, or establish policy or control correctness. Local standard-library unit tests exercise the validator on synthetic temporary files; this is not Windows-native or repository-wide runtime validation.
+
+The TLS closure validator subsequently passed a Windows local check of eight SHA256-bound files and 21 unit tests. That result is bounded to the closure validator and does not validate the new comparison runner.
+
+The replay comparison tool invokes the existing TLS replay runner after package closure and recorded-input binding checks. It compares the runner's actual current output against an expressly unattested synthetic baseline. Its own unit tests use a synthetic subprocess-compatible runner and were executed in a local Python development environment; the new tool has not yet completed actual TLS-runner integration or Windows exact-head validation. A `matched` result never authenticates the historical baseline, manifest, runtime, or policy semantics. The shipped baseline is for the `builtin` decision path and does not assert Rego execution.
 
 The collector provenance example is synthetic. It models provenance semantics; it does not implement cryptographic collector attestation or automated collector equivalence testing.
 
@@ -105,6 +113,10 @@ The repository models these boundaries:
 - declared manifest roles vs pinned profile requirements
 - package closure satisfied vs replay executed
 - manifest SHA256 consistency vs manifest authority
+- current decision result vs recorded assessment binding
+- package closure satisfied vs replay comparison matched
+- matched synthetic baseline vs authenticated historical replay
+- built-in TLS decision vs execution of a Rego policy artifact
 - revised normalization vs new source observation
 - versioned evidence lineage vs authorized supersession
 - revision impact reference vs executed policy re-evaluation
@@ -163,6 +175,9 @@ The repository does not yet implement:
 - generic cross-profile evidence package closure validation
 - trusted publication or independent authentication of closure manifests
 - installed runtime or external dependency availability checks
+- independently authenticated recorded TLS assessment and signed comparison receipt
+- runtime equivalence attestation across historical and current assessment environments
+- generic replay comparison service beyond the bounded TLS profile
 
 The workflow-proof examples are synthetic evidence objects.
 
@@ -207,6 +222,8 @@ If evidence bytes match a supplied digest, preserve the reference digest's prove
 If an evidence representation is corrected after it has been referenced, preserve the old version identity and evaluation binding. A new hash or replacement JSON must not erase the historical policy input.
 
 If an existing evidence file matches a digest but the required evaluation context, policy, schema, or replay implementation is missing, block package closure rather than presenting a successful replay. Even if closure checks pass, keep decision_executed = false until a separate replay actually runs.
+
+If a new replay result agrees with a supplied historical `PASS`, compare its input bindings and decision engine before treating the results as corresponding. Even when they match, do not promote an unattested synthetic recorded assessment to independently verified historical evidence.
 
 If the evidence source is unclear, classify the artifact before using it.
 
