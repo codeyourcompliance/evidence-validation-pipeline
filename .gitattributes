@@ -14,3 +14,7 @@
 /tools/replay_comparison/fixtures/synthetic-recorded-builtin.json text eol=lf
 /tools/replay_comparison/compare_replay.py text eol=lf
 /tools/replay_comparison/tests/test_compare_replay.py text eol=lf
+# Baseline reference check and digest-sensitive synthetic sidecar.
+/tools/baseline_anchor/verify_anchor.py text eol=lf
+/tools/baseline_anchor/tests/test_verify_anchor.py text eol=lf
+/tools/baseline_anchor/fixtures/synthetic-self-reference.json text eol=lf
