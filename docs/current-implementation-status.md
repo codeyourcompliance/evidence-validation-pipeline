@@ -32,6 +32,10 @@ The repository currently includes:
 | Unattested synthetic recorded TLS assessment | `tools/replay_comparison/fixtures/synthetic-recorded-builtin.json` |
 | Synthetic replay comparison tests (mock replay subprocess) | `tools/replay_comparison/tests/` |
 | Replay comparison receipt contract | `docs/replay-comparison-receipt-contract.md` |
+| Bounded synthetic TLS baseline digest-reference comparator | `tools/baseline_anchor/verify_anchor.py` |
+| Co-packaged unattested baseline digest example | `tools/baseline_anchor/fixtures/synthetic-self-reference.json` |
+| Synthetic baseline reference mutation tests | `tools/baseline_anchor/tests/` |
+| Baseline anchor verification boundary contract | `docs/baseline-anchor-verification-contract.md` |
 | Collector provenance contract | `docs/collector-provenance-contract.md` |
 | Synthetic collector provenance comparison | `examples/collector-provenance/` |
 | Transformation provenance contract | `docs/transformation-provenance-contract.md` |
@@ -63,6 +67,8 @@ The offline TLS package closure validator is a bounded, read-only preflight for 
 The TLS closure validator subsequently passed a Windows local check of eight SHA256-bound files and 21 unit tests. That result is bounded to the closure validator and does not validate the new comparison runner.
 
 The replay comparison tool invokes the existing TLS replay runner after package closure and recorded-input binding checks. It compares the runner's actual current output against an expressly unattested synthetic baseline. A Windows exact-head run of `4e92c3a362cdc46362069b1d0a547547fbfb020b` passed 16 synthetic unit tests and returned `matched` with exit 0 against the actual checked-in TLS package using the `builtin` decision path; the tracked worktree was clean. A subsequent code-review repair tightened nested JSON value comparison and introduced two additional tests. The corrected head `b432f1e10d1522e7a223e7e329ea202103f90516` subsequently passed 18/18 Windows synthetic tests and the actual checked-in TLS `builtin` replay comparison (`closure_status=satisfied`, `comparison_status=matched`, exit 0), with a clean tracked worktree. Results are a user-reported local execution transcript, not a signed independent test receipt or GitHub CI result. A `matched` result never authenticates the historical baseline, manifest, runtime, or policy semantics. The shipped baseline is for `builtin` and does not assert Rego execution. No OPA path test is claimed.
+
+The baseline anchor checker reads the same synthetic TLS recorded assessment and compares its raw-byte SHA256 either with an unattested co-packaged sidecar reference or with a separately caller-supplied pinned digest. Mutation tests show that replacing the baseline and sidecar together can remain self-consistent, while an unchanged original caller-pinned digest detects the replacement. The tool does not authenticate a digest source or establish a trusted historical anchor. All receipts retain `reference_independence=not_assessed`, `reference_authentication=not_assessed`, and `historical_replay_verified=false`. The reference-check tool does not execute a control decision, modify TLS evidence, or alter the existing replay comparator. Local Python tests are not evidence of Windows exact-head validation or independent custody.
 
 The collector provenance example is synthetic. It models provenance semantics; it does not implement cryptographic collector attestation or automated collector equivalence testing.
 
@@ -116,6 +122,8 @@ The repository models these boundaries:
 - current decision result vs recorded assessment binding
 - package closure satisfied vs replay comparison matched
 - matched synthetic baseline vs authenticated historical replay
+- co-packaged self-supplied digest vs separately supplied pinned digest
+- supplied reference digest match vs independently authenticated anchor
 - built-in TLS decision vs execution of a Rego policy artifact
 - revised normalization vs new source observation
 - versioned evidence lineage vs authorized supersession
@@ -176,6 +184,7 @@ The repository does not yet implement:
 - trusted publication or independent authentication of closure manifests
 - installed runtime or external dependency availability checks
 - independently authenticated recorded TLS assessment and signed comparison receipt
+- independently controlled baseline anchor issuance, retention, access control, and authentication
 - runtime equivalence attestation across historical and current assessment environments
 - generic replay comparison service beyond the bounded TLS profile
 
@@ -224,6 +233,8 @@ If an evidence representation is corrected after it has been referenced, preserv
 If an existing evidence file matches a digest but the required evaluation context, policy, schema, or replay implementation is missing, block package closure rather than presenting a successful replay. Even if closure checks pass, keep decision_executed = false until a separate replay actually runs.
 
 If a new replay result agrees with a supplied historical `PASS`, compare its input bindings and decision engine before treating the results as corresponding. Even when they match, do not promote an unattested synthetic recorded assessment to independently verified historical evidence.
+
+If a baseline's raw bytes match a provided digest, preserve how that digest was obtained. A self-supplied sidecar and a caller-pinned value can both match; neither check authenticates an independently preserved historical reference.
 
 If the evidence source is unclear, classify the artifact before using it.
 

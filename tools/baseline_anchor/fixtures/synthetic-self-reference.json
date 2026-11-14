@@ -1,0 +1,6 @@
+{
+  "record_type": "synthetic_self_supplied_baseline_digest_v0.1",
+  "profile": "tls-replay-v0.1",
+  "reference_origin": "co_packaged_unattested",
+  "baseline_sha256": "cfec969c3be763a5b977162748116c7461559c0eb2e574faf0c39aebb0c1cb38"
+}
