@@ -18,3 +18,10 @@
 /tools/baseline_anchor/verify_anchor.py text eol=lf
 /tools/baseline_anchor/tests/test_verify_anchor.py text eol=lf
 /tools/baseline_anchor/fixtures/synthetic-self-reference.json text eol=lf
+# Synthetic TLS assessment-run binding files and raw-byte fixtures.
+/tools/assessment_binding/verify_binding.py text eol=lf
+/tools/assessment_binding/tests/test_verify_binding.py text eol=lf
+/tools/assessment_binding/fixtures/run-a-baseline.json text eol=lf
+/tools/assessment_binding/fixtures/run-b-baseline.json text eol=lf
+/tools/assessment_binding/fixtures/run-a-binding.json text eol=lf
+/tools/assessment_binding/fixtures/run-b-binding.json text eol=lf
